@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Security in 4G and 5G Mobile Networks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Overview of security mechanisms, attacks, and feasibility analysis in 4G and 5G mobile networks." />
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      margin: 0;
+      padding: 0;
+      font-size: 0.9rem;
+    }
+
+    nav a {
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+    }
+
+    nav a:hover {
+      background: #1d2537;
+      transform: translateY(-1px);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    .hero {
+      padding: 2.5rem 1.25rem 2rem;
+      text-align: left;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(37, 99, 235, 0.15);
+      border-radius: 999px;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid rgba(96, 165, 250, 0.5);
+      color: #bfdbfe;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.9rem, 3vw, 2.4rem);
+      margin: 0 0 0.5rem;
+      color: #f9fafb;
+    }
+
+    .hero h2 {
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: #9ca3af;
+      margin: 0 0 0.75rem;
+    }
+
+    .hero p {
+      max-width: 620px;
+      color: #d1d5db;
+      font-size: 0.95rem;
+    }
+
+    .hero-meta {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+    }
+
+    .hero-meta span::before {
+      content: "• ";
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      nav ul {
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+    }
+
+    section {
+      margin-bottom: 2rem;
+      padding: 1.2rem 1.2rem 1.1rem;
+      border-radius: 1rem;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.8);
+    }
+
+    section h3 {
+      margin-top: 0;
+      margin-bottom: 0.4rem;
+      font-size: 1.05rem;
+      color: #e5e7eb;
+    }
+
+    section > p {
+      margin-top: 0;
+      font-size: 0.9rem;
+      color: #cbd5f5;
+    }
+
+    h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+      color: #e5e7eb;
+    }
+
+    ul {
+      padding-left: 1.1rem;
+      margin: 0.3rem 0 0.7rem;
+      font-size: 0.88rem;
+      color: #d1d5db;
+    }
+
+    li { margin-bottom: 0.25rem; }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.4rem;
+    }
+
+    .tag {
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: #e5e7eb;
+    }
+
+    .small {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .attack-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.83rem;
+    }
+
+    .attack-table th,
+    .attack-table td {
+      padding: 0.35rem 0.4rem;
+      border-bottom: 1px solid rgba(55, 65, 81, 0.8);
+    }
+
+    .attack-table th {
+      text-align: left;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .pill-low,
+    .pill-med,
+    .pill-high {
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .pill-low {
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+    }
+
+    .pill-med {
+      border: 1px solid rgba(234, 179, 8, 0.7);
+      color: #facc15;
+    }
+
+    .pill-high {
+      border: 1px solid rgba(248, 113, 113, 0.8);
+      color: #fecaca;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.25rem 2rem;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .muted {
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="logo">4G / 5G Security</div>
+      <nav>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#sec-mechanisms">Security Mechanisms</a></li>
+          <li><a href="#attacks">Attacks</a></li>
+          <li><a href="#feasibility">Feasibility</a></li>
+          <li><a href="#references">References</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="overview">
+      <div class="badge">
+        <span>Course Project</span>
+        <span>Mobile Network Security</span>
+      </div>
+      <h1>Security in 4G and 5G Mobile Networks</h1>
+      <h2>Description of security mechanisms, attacks, and feasibility analysis</h2>
+      <p>
+        This website summarizes how modern cellular networks protect users and operators,
+        which attacks are still possible in 4G and 5G, and how realistic those attacks are
+        in practice in terms of required skills, cost, and impact.
+      </p>
+      <div class="hero-meta">
+        <span>Author: <strong>[Your Name]</strong></span>
+        <span>Course: [Course Name]</span>
+        <span>Semester: [Year / Term]</span>
+      </div>
+    </section>
+
+    <div class="layout">
+      <!-- Main content -->
+      <div>
+        <section id="sec-mechanisms">
+          <h3>1. Security Architecture & Mechanisms</h3>
+          <p>
+            High-level overview of how 4G (LTE/EPC) and 5G (NR/5GC) implement security on different layers:
+            user authentication, key management, confidentiality, integrity, and network slicing.
+          </p>
+
+          <h4>1.1 4G (LTE) Security</h4>
+          <ul>
+            <li>EPS-AKA authentication between UE, eNodeB, and EPC.</li>
+            <li>Key hierarchy: K, K<sub>ASME</sub>, KeNB, etc.</li>
+            <li>Encryption and integrity algorithms (e.g., AES-based, SNOW 3G).</li>
+            <li>Protection of control plane vs. user plane traffic.</li>
+          </ul>
+
+          <h4>1.2 5G Security Enhancements</h4>
+          <ul>
+            <li>5G-AKA, SUCI/SUPI and subscriber identity protection.</li>
+            <li>Service-based architecture (SBA) and network function security (TLS, OAuth2, etc.).</li>
+            <li>Roaming security improvements and home network control.</li>
+            <li>Network slicing and isolation assumptions.</li>
+          </ul>
+
+          <div class="tag-list">
+            <span class="tag">Authentication</span>
+            <span class="tag">Key Management</span>
+            <span class="tag">Encryption</span>
+            <span class="tag">Integrity Protection</span>
+            <span class="tag">Privacy</span>
+          </div>
+        </section>
+
+        <section id="attacks">
+          <h3>2. Known & Possible Attacks</h3>
+          <p>
+            This section lists attacks found in the literature against 4G/5G networks. For each attack,
+            the goal, required capabilities, and affected generation (4G, 5G, or both) are described.
+          </p>
+
+          <h4>2.1 Signaling & Protocol Attacks</h4>
+          <ul>
+            <li>Downgrade attacks (forcing a device from 4G/5G to 2G/3G).</li>
+            <li>Attach/TAU procedure abuse for tracking and denial of service.</li>
+            <li>Fake base station (IMSI catcher / stingray-like devices).</li>
+          </ul>
+
+          <h4>2.2 User Privacy & Location Tracking</h4>
+          <ul>
+            <li>Exploiting temporary identifiers (GUTI, 5G-GUTI) for long-term tracking.</li>
+            <li>Paging message analysis to infer presence/location of a subscriber.</li>
+          </ul>
+
+          <h4>2.3 Core Network & SBA Attacks (Mainly 5G)</h4>
+          <ul>
+            <li>Exploiting misconfigured service-based interfaces (HTTP/2, JSON APIs).</li>
+            <li>Lack of isolation between network slices or tenants.</li>
+          </ul>
+        </section>
+
+        <section id="feasibility">
+          <h3>3. Feasibility & Complexity Analysis</h3>
+          <p>
+            Not all attacks are equally practical. Here we compare their required hardware,
+            technical knowledge, cost, and realistic impact on end users and operators.
+          </p>
+
+          <table class="attack-table">
+            <thead>
+              <tr>
+                <th>Attack</th>
+                <th>Target</th>
+                <th>Skills</th>
+                <th>Cost</th>
+                <th>Practicality</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fake base station (IMSI catcher)</td>
+                <td>4G / 5G UE</td>
+                <td>Medium RF & protocol knowledge</td>
+                <td>$$ (SDR + antenna)</td>
+                <td><span class="pill-med">Medium</span></td>
+              </tr>
+              <tr>
+                <td>Core network SBA exploit</td>
+                <td>5G Core (SBA)</td>
+                <td>High (web/API & 5G)</td>
+                <td>$$$ (lab or operator access)</td>
+                <td><span class="pill-high">High (if misconfigured)</span></td>
+              </tr>
+              <tr>
+                <td>Location tracking via paging</td>
+                <td>Subscribers in cell</td>
+                <td>Medium</td>
+                <td>$–$$</td>
+                <td><span class="pill-med">Medium</span></td>
+              </tr>
+              <tr>
+                <td>2G downgrade & interception</td>
+                <td>Legacy devices</td>
+                <td>Medium</td>
+                <td>$$</td>
+                <td><span class="pill-low">Decreasing (as 2G is phased out)</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>3.1 Evaluation Criteria</h4>
+          <ul>
+            <li><strong>Required capabilities:</strong> attacker position, access to network, RF equipment.</li>
+            <li><strong>Complexity:</strong> protocol knowledge, software skills, reverse engineering.</li>
+            <li><strong>Detectability:</strong> can operator detect / correlate such activity?</li>
+            <li><strong>Mitigations:</strong> standard-based vs. deployment-specific countermeasures.</li>
+          </ul>
+        </section>
+
+        <section id="conclusion">
+          <h3>4. Conclusion</h3>
+          <p>
+            Short summary comparing 4G and 5G: which attacks are mitigated, which remain possible,
+            and what open research or standardization issues still exist. This is where you present
+            your own opinion based on the analyzed papers.
+          </p>
+        </section>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <section>
+          <div class="card-title">Project Checklist</div>
+          <ul class="small">
+            <li>✓ Explain 4G &amp; 5G security architecture.</li>
+            <li>✓ List concrete attacks from research papers.</li>
+            <li>✓ Analyze feasibility (skills, cost, impact).</li>
+            <li>✓ Provide proper references.</li>
+          </ul>
+        </section>
+
+        <section>
+          <div class="card-title">How to use this site</div>
+          <p class="small">
+            Use the navigation bar at the top to jump between high-level overview,
+            security mechanisms, known attacks, and feasibility analysis.
+            Each bullet point can be expanded into a paragraph in your final report.
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="card-title">Key References</div>
+          <p class="small muted">
+            List the papers, standards, and surveys you actually used.
+            For example:
+          </p>
+          <ul class="small">
+            <li>3GPP TS 33.xxx – LTE/5G security specifications.</li>
+            <li>Academic surveys on 4G/5G security and privacy.</li>
+            <li>Papers describing real-world attacks and PoCs.</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <p class="muted">
+      &copy; [Year] [Your Name] — Security in 4G and 5G Mobile Networks.
+      For educational use only.
+    </p>
+  </footer>
+</body>
+</html>
