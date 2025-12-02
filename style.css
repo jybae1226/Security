@@ -69,6 +69,7 @@ main {
 }
 
 .hero {
+  max-width: 2000px;
   padding: 2.5rem 1.25rem 2rem;
   text-align: left;
 }
