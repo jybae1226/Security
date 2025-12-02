@@ -41,48 +41,44 @@
       </div>
 
       <div class="introduction_margin">
-      <h1>1. Introduction</h1>
+      <h1>1. Introduction – What are 4G and 5G and why is security critical?</h1>
       </div>
       <p>
-        Mobile networks have become the main communication infrastructure for billions of users.
-        4G/LTE enabled mobile broadband and always-on connectivity, while 5G promises ultra-low latency,
-        massive machine-type communication, and support for critical services such as industrial control
-        or connected vehicles. As a result, the security of these networks is directly linked to user privacy,
-        safety, and even national security.
+        4G (LTE) and 5G are generations of cellular mobile network technology. 
+        4G, usually implemented as Long Term Evolution (LTE), introduced high-speed packet-switched data, 
+        making mobile broadband, video streaming, and real-time applications practical on smartphones and tablets. 
+        4G networks are based on the Evolved Packet System (EPS), which combines the radio access network (E-UTRAN) 
+        and the Evolved Packet Core (EPC) into an all-IP architecture.
       </p>
       <p>
-        The goal of this project is to provide a clear description of the security mechanisms
-        that protect 4G and 5G networks, to summarize known types of attacks against these systems,
-        and to analyze the feasibility and complexity of these attacks from the perspective of
-        a realistic attacker. The project is based on existing standards and research papers rather
-        than on original experiments in an operator network.
-      </p>
-    </section>
-
-    <section>
-      <h3>2. Current State of the Art</h3>
-      <p>
-        4G/LTE and 5G are specified by the 3rd Generation Partnership Project (3GPP), which 
-        defines detailed security architectures for authentication, key management, and protection 
-        of both control-plane and user-plane traffic. Over the last decade, these specifications 
-        have evolved to address weaknesses discovered in earlier generations such as 2G and 3G, 
-        where encryption was optional and mutual authentication was often missing.
+        5G, or Fifth-Generation mobile networks, builds on this by targeting much higher data rates, 
+        ultra-low latency, and support for massive numbers of devices. 5G New Radio (NR) and 
+        the 5G Core (5GC) are designed to serve three broad categories of services: 
+        enhanced Mobile Broadband (eMBB), ultra-reliable low-latency communications (URLLC), 
+        and massive machine-type communications (mMTC), which includes IoT devices and industrial systems.
       </p>
       <p>
-        In 4G, the EPS-AKA protocol, a stronger key hierarchy, and mandatory integrity protection 
-        already delivered substantial improvements over previous systems. 5G further refines this 
-        model by introducing subscriber identity protection on the radio interface, a service-based 
-        core network architecture secured with modern web technologies (TLS, OAuth2), and more 
-        explicit handling of roaming and inter-operator trust.
+        In today’s mobile ecosystem, these networks are not only used for personal communication and 
+        entertainment but also for critical applications. Examples include connected and autonomous vehicles, 
+        industrial control systems, remote healthcare, smart grids, and public safety communication. 
+        As more sectors depend on mobile connectivity, any compromise of availability, integrity, 
+        or confidentiality in 4G/5G can have economic impact, damage the privacy of millions of users, 
+        or even endanger lives.
       </p>
       <p>
-        At the same time, academic research has shown that even modern systems contain design 
-        and implementation flaws. Examples include protocol downgrades to weaker generations, 
-        fake base stations that exploit residual weaknesses in the attachment procedures, 
-        side-channel based location tracking, and misconfigurations of 5G service-based 
-        interfaces. Therefore, the state of the art in mobile network security is a balance 
-        between strong standardized mechanisms and practical vulnerabilities in deployments.
+        Security in mobile networks is therefore no longer just about preventing casual eavesdropping on voice calls. 
+        It must protect long-term identifiers (such as IMSI or SUPI), signaling integrity, user data, 
+        and the operation of complex service platforms. Attackers may range from individual hackers and 
+        criminal groups to state-sponsored actors. At the same time, the systems themselves have become more complex: 
+        5G introduces cloud-native deployments, a service-based architecture, and network slicing, 
+        which all increase the potential attack surface.
       </p>
+      <p><strong>aim of this project is to:</strong></p>
+        <ul class="project-bullets">
+            <li>describe how 4G and 5G attempt to secure authentication, key management, radio traffic, and core network interfaces</li>
+            <li>give an overview of well-known attacks against these systems from the scientific literature</li>
+            <li>analyze, for each attack, how feasible it is in practice considering the required equipment, skills, cost, and detectability</li>
+        </ul>
     </section>
   </main>
 

@@ -250,5 +250,15 @@ footer {
 }
 
 .introduction_margin{
-    margin-top: 100px;
+    margin-top: 50px;
+    margin-bottom: 0px;
+}
+
+.project-bullets {
+  margin-left: 1.5rem;
+  line-height: 1.6;
+}
+
+.project-bullets li {
+  margin-bottom: 0.8rem;
 }
