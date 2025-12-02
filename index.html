@@ -51,6 +51,8 @@
       margin: 0;
       padding: 0;
       font-size: 0.9rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     nav a {
@@ -132,11 +134,6 @@
     @media (max-width: 900px) {
       .layout {
         grid-template-columns: minmax(0, 1fr);
-      }
-      nav ul {
-        font-size: 0.8rem;
-        flex-wrap: wrap;
-        justify-content: flex-end;
       }
     }
 
@@ -274,9 +271,11 @@
       <nav>
         <ul>
           <li><a href="#overview">Overview</a></li>
-          <li><a href="#sec-mechanisms">Security Mechanisms</a></li>
-          <li><a href="#attacks">Attacks</a></li>
-          <li><a href="#feasibility">Feasibility</a></li>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#state-of-art">State of the Art</a></li>
+          <li><a href="#mechanisms">Security Mechanisms</a></li>
+          <li><a href="#attacks-feasibility">Attacks &amp; Feasibility</a></li>
+          <li><a href="#opinion">Own Opinion</a></li>
           <li><a href="#references">References</a></li>
         </ul>
       </nav>
@@ -284,6 +283,7 @@
   </header>
 
   <main>
+    <!-- Title + very short overview -->
     <section class="hero" id="overview">
       <div class="badge">
         <span>Course Project</span>
@@ -292,41 +292,119 @@
       <h1>Security in 4G and 5G Mobile Networks</h1>
       <h2>Description of security mechanisms, attacks, and feasibility analysis</h2>
       <p>
-        This website summarizes how modern cellular networks protect users and operators,
-        which attacks are still possible in 4G and 5G, and how realistic those attacks are
-        in practice in terms of required skills, cost, and impact.
+        This project investigates how 4G and 5G mobile networks are protected, 
+        what kinds of attacks are still possible against these systems, and how 
+        realistic such attacks are in practice in terms of required skills, cost, and impact.
       </p>
       <div class="hero-meta">
-        <span>Author: <strong>[Your Name]</strong></span>
-        <span>Course: [Course Name]</span>
-        <span>Semester: [Year / Term]</span>
+        <span>Author: <strong>[JongYeon Bae]</strong></span>
+        <span>Course: [Fundamentals of the Security in Communications]</span>
       </div>
     </section>
 
     <div class="layout">
       <!-- Main content -->
       <div>
-        <section id="sec-mechanisms">
-          <h3>1. Security Architecture & Mechanisms</h3>
+        <!-- 1. Introduction -->
+        <section id="introduction">
+          <h3>1. Introduction</h3>
           <p>
-            High-level overview of how 4G (LTE/EPC) and 5G (NR/5GC) implement security on different layers:
-            user authentication, key management, confidentiality, integrity, and network slicing.
+            Mobile networks have become the main communication infrastructure for billions of users. 
+            4G/LTE enabled mobile broadband and always-on connectivity, while 5G promises ultra-low 
+            latency, massive machine-type communication, and support for critical services such as 
+            industrial control or connected vehicles. As a result, the security of these networks is 
+            directly linked to user privacy, safety, and even national security.
+          </p>
+          <p>
+            The goal of this project is to provide a clear description of the security mechanisms 
+            that protect 4G and 5G networks, to summarize known types of attacks against these systems, 
+            and to analyze the feasibility and complexity of these attacks from the perspective of a 
+            realistic attacker. The project is based on existing standards and research papers rather 
+            than on original experiments in an operator network.
+          </p>
+        </section>
+
+        <!-- 2. State of the art -->
+        <section id="state-of-art">
+          <h3>2. Current State of the Art</h3>
+          <p>
+            4G/LTE and 5G are specified by the 3rd Generation Partnership Project (3GPP), which 
+            defines detailed security architectures for authentication, key management, and protection 
+            of both control-plane and user-plane traffic. Over the last decade, these specifications 
+            have evolved to address weaknesses discovered in earlier generations such as 2G and 3G, 
+            where encryption was optional and mutual authentication was often missing.
+          </p>
+          <p>
+            In 4G, the EPS-AKA protocol, a stronger key hierarchy, and mandatory integrity protection 
+            already delivered substantial improvements over previous systems. 5G further refines this 
+            model by introducing subscriber identity protection on the radio interface, a service-based 
+            core network architecture secured with modern web technologies (TLS, OAuth2), and more 
+            explicit handling of roaming and inter-operator trust.
+          </p>
+          <p>
+            At the same time, academic research has shown that even modern systems contain design 
+            and implementation flaws. Examples include protocol downgrades to weaker generations, 
+            fake base stations that exploit residual weaknesses in the attachment procedures, 
+            side-channel based location tracking, and misconfigurations of 5G service-based 
+            interfaces. Therefore, the state of the art in mobile network security is a balance 
+            between strong standardized mechanisms and practical vulnerabilities in deployments.
+          </p>
+        </section>
+
+        <!-- 3. Security mechanisms -->
+        <section id="mechanisms">
+          <h3>3. Security Architecture &amp; Mechanisms</h3>
+          <p>
+            This section briefly summarizes how 4G and 5G secure subscriber identity, authenticate 
+            devices and networks, derive cryptographic keys, and protect signaling and user data.
           </p>
 
-          <h4>1.1 4G (LTE) Security</h4>
+          <h4>3.1 4G (LTE) Security</h4>
           <ul>
-            <li>EPS-AKA authentication between UE, eNodeB, and EPC.</li>
-            <li>Key hierarchy: K, K<sub>ASME</sub>, KeNB, etc.</li>
-            <li>Encryption and integrity algorithms (e.g., AES-based, SNOW 3G).</li>
-            <li>Protection of control plane vs. user plane traffic.</li>
+            <li>
+              <strong>Authentication (EPS-AKA):</strong> mutual authentication between the User 
+              Equipment (UE), the serving base station (eNodeB), and the core network (EPC) using 
+              long-term credentials stored in the USIM and in the operator's Home Subscriber Server (HSS).
+            </li>
+            <li>
+              <strong>Key hierarchy:</strong> a master key <em>K</em> is used to derive K<sub>ASME</sub> 
+              and then further keys such as KeNB for the radio interface. This limits the impact of 
+              key compromise and supports key refresh during mobility.
+            </li>
+            <li>
+              <strong>Confidentiality and integrity:</strong> standardized algorithms (for example, 
+              AES or SNOW 3G based) provide encryption and integrity protection for control-plane 
+              signaling and, optionally, for user-plane data.
+            </li>
+            <li>
+              <strong>Separation of planes:</strong> different keys and security associations for control 
+              and user plane, so that signaling remains protected even if user data is handled by 
+              intermediate gateways and tunnels.
+            </li>
           </ul>
 
-          <h4>1.2 5G Security Enhancements</h4>
+          <h4>3.2 5G Security Enhancements</h4>
           <ul>
-            <li>5G-AKA, SUCI/SUPI and subscriber identity protection.</li>
-            <li>Service-based architecture (SBA) and network function security (TLS, OAuth2, etc.).</li>
-            <li>Roaming security improvements and home network control.</li>
-            <li>Network slicing and isolation assumptions.</li>
+            <li>
+              <strong>5G-AKA and subscriber identity protection:</strong> the permanent subscriber 
+              identifier (SUPI) is never sent in clear over the air. Instead, a concealed identifier (SUCI) 
+              is transmitted, protecting users from passive IMSI-catching style attacks.
+            </li>
+            <li>
+              <strong>Service-Based Architecture (SBA):</strong> core network functions communicate via 
+              HTTP/2 and JSON APIs secured with TLS and modern authentication/authorization mechanisms, 
+              aligning mobile network security with common IT security practices.
+            </li>
+            <li>
+              <strong>Roaming and home control:</strong> the home network has more control over 
+              authentication decisions and can better enforce its policies even when the subscriber 
+              is served by a visited network.
+            </li>
+            <li>
+              <strong>Network slicing:</strong> logical networks (slices) are isolated and can be 
+              configured with different security policies depending on the service (e.g., massive 
+              IoT vs. ultra-reliable low-latency communication).
+            </li>
           </ul>
 
           <div class="tag-list">
@@ -335,43 +413,67 @@
             <span class="tag">Encryption</span>
             <span class="tag">Integrity Protection</span>
             <span class="tag">Privacy</span>
+            <span class="tag">Network Slicing</span>
           </div>
         </section>
 
-        <section id="attacks">
-          <h3>2. Known & Possible Attacks</h3>
+        <!-- 4. Attacks + Feasibility -->
+        <section id="attacks-feasibility">
+          <h3>4. Known Attacks and Feasibility Analysis</h3>
           <p>
-            This section lists attacks found in the literature against 4G/5G networks. For each attack,
-            the goal, required capabilities, and affected generation (4G, 5G, or both) are described.
+            Even with strong standardized security, practical attacks against 4G and 5G networks 
+            remain possible. This section describes representative attacks and evaluates their 
+            feasibility in terms of attacker capabilities, technical complexity, and required budget.
           </p>
 
-          <h4>2.1 Signaling & Protocol Attacks</h4>
+          <h4>4.1 Signaling and Protocol-Level Attacks</h4>
           <ul>
-            <li>Downgrade attacks (forcing a device from 4G/5G to 2G/3G).</li>
-            <li>Attach/TAU procedure abuse for tracking and denial of service.</li>
-            <li>Fake base station (IMSI catcher / stingray-like devices).</li>
+            <li>
+              <strong>Downgrade attacks:</strong> an attacker operates a fake base station that forces 
+              devices to connect using weaker generations (2G/3G) where encryption or mutual 
+              authentication may be absent, enabling eavesdropping or impersonation.
+            </li>
+            <li>
+              <strong>Attach and tracking area update abuse:</strong> by manipulating attach/TAU 
+              procedures, an attacker can cause denial of service for specific subscribers or 
+              infer their presence in a given area.
+            </li>
+            <li>
+              <strong>Fake base stations (IMSI catchers):</strong> devices are tricked into 
+              connecting to a rogue station that requests identifiers or exploits missing checks 
+              in early connection stages.
+            </li>
           </ul>
 
-          <h4>2.2 User Privacy & Location Tracking</h4>
+          <h4>4.2 User Privacy and Location Tracking</h4>
           <ul>
-            <li>Exploiting temporary identifiers (GUTI, 5G-GUTI) for long-term tracking.</li>
-            <li>Paging message analysis to infer presence/location of a subscriber.</li>
+            <li>
+              <strong>Identifier re-use:</strong> if temporary identifiers (such as GUTI or 5G-GUTI) 
+              are not refreshed frequently enough, an attacker can correlate them over time and 
+              build movement profiles of a subscriber.
+            </li>
+            <li>
+              <strong>Paging analysis:</strong> by monitoring paging messages in a cell and combining 
+              them with external triggers (such as sending messages or calls), an attacker can 
+              infer whether a specific subscriber is currently in a region.
+            </li>
           </ul>
 
-          <h4>2.3 Core Network & SBA Attacks (Mainly 5G)</h4>
+          <h4>4.3 Core Network and SBA Attacks</h4>
           <ul>
-            <li>Exploiting misconfigured service-based interfaces (HTTP/2, JSON APIs).</li>
-            <li>Lack of isolation between network slices or tenants.</li>
+            <li>
+              <strong>Exploiting misconfigured APIs:</strong> 5G core network functions expose 
+              HTTP-based interfaces. If TLS, certificates, or access control are misconfigured, 
+              attackers may gain unauthorized access to signaling or subscriber data.
+            </li>
+            <li>
+              <strong>Slice isolation failures:</strong> incorrect configuration of network slices 
+              can allow one tenant or service to affect the performance or security of another, 
+              undermining the isolation promised by network slicing.
+            </li>
           </ul>
-        </section>
 
-        <section id="feasibility">
-          <h3>3. Feasibility & Complexity Analysis</h3>
-          <p>
-            Not all attacks are equally practical. Here we compare their required hardware,
-            technical knowledge, cost, and realistic impact on end users and operators.
-          </p>
-
+          <h4>4.4 Summary of Feasibility and Complexity</h4>
           <table class="attack-table">
             <thead>
               <tr>
@@ -386,14 +488,14 @@
               <tr>
                 <td>Fake base station (IMSI catcher)</td>
                 <td>4G / 5G UE</td>
-                <td>Medium RF & protocol knowledge</td>
+                <td>Medium RF &amp; protocol knowledge</td>
                 <td>$$ (SDR + antenna)</td>
                 <td><span class="pill-med">Medium</span></td>
               </tr>
               <tr>
                 <td>Core network SBA exploit</td>
                 <td>5G Core (SBA)</td>
-                <td>High (web/API & 5G)</td>
+                <td>High (web/API &amp; 5G)</td>
                 <td>$$$ (lab or operator access)</td>
                 <td><span class="pill-high">High (if misconfigured)</span></td>
               </tr>
@@ -405,7 +507,7 @@
                 <td><span class="pill-med">Medium</span></td>
               </tr>
               <tr>
-                <td>2G downgrade & interception</td>
+                <td>2G downgrade and interception</td>
                 <td>Legacy devices</td>
                 <td>Medium</td>
                 <td>$$</td>
@@ -414,21 +516,62 @@
             </tbody>
           </table>
 
-          <h4>3.1 Evaluation Criteria</h4>
+          <h4>4.5 Evaluation Criteria</h4>
           <ul>
-            <li><strong>Required capabilities:</strong> attacker position, access to network, RF equipment.</li>
-            <li><strong>Complexity:</strong> protocol knowledge, software skills, reverse engineering.</li>
-            <li><strong>Detectability:</strong> can operator detect / correlate such activity?</li>
-            <li><strong>Mitigations:</strong> standard-based vs. deployment-specific countermeasures.</li>
+            <li><strong>Required capabilities:</strong> physical location, access to RF spectrum, or access to operator infrastructure.</li>
+            <li><strong>Complexity:</strong> required knowledge of radio protocols, cryptography, and implementation details.</li>
+            <li><strong>Detectability:</strong> whether unusual signaling patterns, RF behavior, or log entries could reveal the attack.</li>
+            <li><strong>Mitigations:</strong> standard-level defenses (e.g., new protocol versions) and deployment-level measures (e.g., monitoring, configuration hardening).</li>
           </ul>
         </section>
 
-        <section id="conclusion">
-          <h3>4. Conclusion</h3>
+        <!-- 5. Own opinion & contribution -->
+        <section id="opinion">
+          <h3>5. Own Opinion and Contribution</h3>
           <p>
-            Short summary comparing 4G and 5G: which attacks are mitigated, which remain possible,
-            and what open research or standardization issues still exist. This is where you present
-            your own opinion based on the analyzed papers.
+            In my opinion, the security design of 4G and especially 5G represents a major improvement 
+            over previous generations. The introduction of mutual authentication, stronger key 
+            derivation, and subscriber identity protection shows that lessons from past failures 
+            have been taken seriously. However, the system is now also more complex: the 5G core 
+            relies on many different components and interfaces, which increases the attack surface 
+            if they are not configured correctly.
+          </p>
+          <p>
+            From a practical perspective, attacks that require custom RF equipment and detailed 
+            protocol knowledge are still mostly limited to motivated adversaries such as security 
+            researchers, criminals with technical skills, or state-level actors. On the other hand, 
+            misconfigurations of 5G service-based interfaces resemble typical IT security problems 
+            and can be exploited with common web security skills. This suggests that mobile network 
+            operators need both traditional telecom security expertise and modern IT security 
+            practices.
+          </p>
+          <p>
+            The main contribution of this project is a structured overview that links concrete 
+            attacks to the underlying security mechanisms and evaluates their feasibility using 
+            simple criteria (required skills, cost, and practicality). This may help students or 
+            engineers who are new to the field to quickly understand which threats are mainly of 
+            theoretical interest and which ones are realistic in current deployments.
+          </p>
+        </section>
+
+        <!-- 6. Conclusion -->
+        <section id="conclusion">
+          <h3>6. Conclusion</h3>
+          <p>
+            This project has described the main security mechanisms in 4G and 5G mobile networks, 
+            summarized representative attacks from the literature, and analyzed their feasibility. 
+            Compared to earlier generations, 4G and 5G offer much stronger protection of subscriber 
+            identity and signaling. Nevertheless, several classes of attacks remain possible, 
+            especially in the presence of legacy technologies, protocol downgrades, or weak 
+            deployments of the 5G core.
+          </p>
+          <p>
+            Future work could include hands-on experiments in a controlled testbed, automated 
+            tools for detecting misconfigurations in service-based interfaces, and better 
+            visualization of the security properties of different network slices. Overall, 
+            mobile network security is a moving target, and continuous collaboration between 
+            standardization bodies, operators, and the research community is necessary to keep 
+            4G and 5G networks trustworthy.
           </p>
         </section>
       </div>
@@ -438,32 +581,34 @@
         <section>
           <div class="card-title">Project Checklist</div>
           <ul class="small">
-            <li>✓ Explain 4G &amp; 5G security architecture.</li>
-            <li>✓ List concrete attacks from research papers.</li>
-            <li>✓ Analyze feasibility (skills, cost, impact).</li>
-            <li>✓ Provide proper references.</li>
+            <li>✓ Title and introduction of the topic.</li>
+            <li>✓ Description of current state of the art.</li>
+            <li>✓ Detailed description of security mechanisms and attacks.</li>
+            <li>✓ Feasibility and complexity analysis.</li>
+            <li>✓ Own opinion and contribution.</li>
+            <li>✓ Conclusion and references.</li>
           </ul>
         </section>
 
         <section>
-          <div class="card-title">How to use this site</div>
+          <div class="card-title">How to read this site</div>
           <p class="small">
-            Use the navigation bar at the top to jump between high-level overview,
-            security mechanisms, known attacks, and feasibility analysis.
-            Each bullet point can be expanded into a paragraph in your final report.
+            Use the navigation bar at the top to move between introduction, state of the art,
+            technical mechanisms, known attacks, feasibility analysis, and personal conclusions.
+            Each paragraph is written so it can be reused or extended in a written project report.
           </p>
         </section>
 
         <section id="references">
-          <div class="card-title">Key References</div>
+          <div class="card-title">7. References</div>
           <p class="small muted">
-            List the papers, standards, and surveys you actually used.
-            For example:
+            Replace the examples below with the exact documents, papers, and standards you used.
           </p>
           <ul class="small">
-            <li>3GPP TS 33.xxx – LTE/5G security specifications.</li>
-            <li>Academic surveys on 4G/5G security and privacy.</li>
-            <li>Papers describing real-world attacks and PoCs.</li>
+            <li>[1] 3GPP TS 33.401 – 3GPP System Architecture Evolution (SAE); Security architecture.</li>
+            <li>[2] 3GPP TS 33.501 – Security architecture and procedures for 5G system.</li>
+            <li>[3] Survey papers on 4G/5G security and privacy (e.g., "A Survey of 5G Security: Current Status and Future Directions").</li>
+            <li>[4] Research articles describing downgrade attacks, fake base stations, and paging-based location tracking.</li>
           </ul>
         </section>
       </aside>
@@ -472,7 +617,7 @@
 
   <footer>
     <p class="muted">
-      &copy; [Year] [Your Name] — Security in 4G and 5G Mobile Networks.
+      &copy; [2025] [JongYeon Bae] — Security in 4G and 5G Mobile Networks.
       For educational use only.
     </p>
   </footer>
