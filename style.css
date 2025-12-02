@@ -262,3 +262,7 @@ footer {
 .project-bullets li {
   margin-bottom: 0.8rem;
 }
+
+.text-big-25 {
+    font-size: 25px;
+}
