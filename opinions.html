@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Own Opinion &amp; Conclusion – 4G/5G Security</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="logo">4G / 5G Security</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="introduction.html">Introduction</a></li>
+          <li><a href="mechanisms.html">Security Mechanisms</a></li>
+          <li><a href="attacks.html">Attacks &amp; Feasibility</a></li>
+          <li><a href="opinion.html" class="active">Opinion &amp; Conclusion</a></li>
+          <li><a href="references.html">References</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>5. Own Opinion and Contribution</h1>
+      <p>
+        In my opinion, the security design of 4G and especially 5G represents a major improvement 
+        over previous generations. The introduction of mutual authentication, stronger key 
+        derivation, and subscriber identity protection shows that lessons from past failures 
+        have been taken seriously. However, the system is now also more complex: the 5G core 
+        relies on many different components and interfaces, which increases the attack surface 
+        if they are not configured correctly.
+      </p>
+      <p>
+        From a practical perspective, attacks that require custom RF equipment and detailed 
+        protocol knowledge are still mostly limited to motivated adversaries such as security 
+        researchers, criminals with technical skills, or state-level actors. On the other hand, 
+        misconfigurations of 5G service-based interfaces resemble typical IT security problems 
+        and can be exploited with common web security skills. This suggests that mobile network 
+        operators need both traditional telecom security expertise and modern IT security 
+        practices.
+      </p>
+      <p>
+        The main contribution of this project is a structured overview that links concrete 
+        attacks to the underlying security mechanisms and evaluates their feasibility using 
+        simple criteria (required skills, cost, and practicality). This may help students or 
+        engineers who are new to the field to quickly understand which threats are mainly of 
+        theoretical interest and which ones are realistic in current deployments.
+      </p>
+    </section>
+
+    <section>
+      <h3>6. Conclusion</h3>
+      <p>
+        This project has described the main security mechanisms in 4G and 5G mobile networks, 
+        summarized representative attacks from the literature, and analyzed their feasibility. 
+        Compared to earlier generations, 4G and 5G offer much stronger protection of subscriber 
+        identity and signaling. Nevertheless, several classes of attacks remain possible, 
+        especially in the presence of legacy technologies, protocol downgrades, or weak 
+        deployments of the 5G core.
+      </p>
+      <p>
+        Future work could include hands-on experiments in a controlled testbed, automated 
+        tools for detecting misconfigurations in service-based interfaces, and better 
+        visualization of the security properties of different network slices. Overall, 
+        mobile network security is a moving target, and continuous collaboration between 
+        standardization bodies, operators, and the research community is necessary to keep 
+        4G and 5G networks trustworthy.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p class="muted">
+      &copy; [Year] [Your Name].
+    </p>
+  </footer>
+</body>
+</html>

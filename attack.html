@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Attacks &amp; Feasibility – 4G/5G Security</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="logo">4G / 5G Security</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="introduction.html">Introduction</a></li>
+          <li><a href="mechanisms.html">Security Mechanisms</a></li>
+          <li><a href="attacks.html" class="active">Attacks &amp; Feasibility</a></li>
+          <li><a href="opinion.html">Opinion &amp; Conclusion</a></li>
+          <li><a href="references.html">References</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>4. Known Attacks and Feasibility Analysis</h1>
+      <p>
+        This page describes representative attacks against 4G and 5G networks and evaluates their 
+        feasibility in terms of attacker capabilities, technical complexity, and required budget.
+      </p>
+    </section>
+
+    <section>
+      <h3>4.1 Signaling and Protocol-Level Attacks</h3>
+      <ul>
+        <li>
+          <strong>Downgrade attacks:</strong> an attacker operates a fake base station that forces 
+          devices to connect using weaker generations (2G/3G) where encryption or mutual 
+          authentication may be absent, enabling eavesdropping or impersonation.
+        </li>
+        <li>
+          <strong>Attach and tracking area update abuse:</strong> by manipulating attach/TAU 
+          procedures, an attacker can cause denial of service for specific subscribers or 
+          infer their presence in a given area.
+        </li>
+        <li>
+          <strong>Fake base stations (IMSI catchers):</strong> devices are tricked into 
+          connecting to a rogue station that requests identifiers or exploits missing checks 
+          in early connection stages.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>4.2 User Privacy and Location Tracking</h3>
+      <ul>
+        <li>
+          <strong>Identifier re-use:</strong> if temporary identifiers (such as GUTI or 5G-GUTI) 
+          are not refreshed frequently enough, an attacker can correlate them over time and 
+          build movement profiles of a subscriber.
+        </li>
+        <li>
+          <strong>Paging analysis:</strong> by monitoring paging messages in a cell and combining 
+          them with external triggers (such as sending messages or calls), an attacker can 
+          infer whether a specific subscriber is currently in a region.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>4.3 Core Network and SBA Attacks</h3>
+      <ul>
+        <li>
+          <strong>Exploiting misconfigured APIs:</strong> 5G core network functions expose 
+          HTTP-based interfaces. If TLS, certificates, or access control are misconfigured, 
+          attackers may gain unauthorized access to signaling or subscriber data.
+        </li>
+        <li>
+          <strong>Slice isolation failures:</strong> incorrect configuration of network slices 
+          can allow one tenant or service to affect the performance or security of another, 
+          undermining the isolation promised by network slicing.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>4.4 Feasibility and Complexity Summary</h3>
+      <table class="attack-table">
+        <thead>
+          <tr>
+            <th>Attack</th>
+            <th>Target</th>
+            <th>Skills</th>
+            <th>Cost</th>
+            <th>Practicality</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fake base station (IMSI catcher)</td>
+            <td>4G / 5G UE</td>
+            <td>Medium RF &amp; protocol knowledge</td>
+            <td>$$ (SDR + antenna)</td>
+            <td><span class="pill-med">Medium</span></td>
+          </tr>
+          <tr>
+            <td>Core network SBA exploit</td>
+            <td>5G Core (SBA)</td>
+            <td>High (web/API &amp; 5G)</td>
+            <td>$$$ (lab or operator access)</td>
+            <td><span class="pill-high">High (if misconfigured)</span></td>
+          </tr>
+          <tr>
+            <td>Location tracking via paging</td>
+            <td>Subscribers in cell</td>
+            <td>Medium</td>
+            <td>$–$$</td>
+            <td><span class="pill-med">Medium</span></td>
+          </tr>
+          <tr>
+            <td>2G downgrade and interception</td>
+            <td>Legacy devices</td>
+            <td>Medium</td>
+            <td>$$</td>
+            <td><span class="pill-low">Decreasing (as 2G is phased out)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>4.5 Evaluation Criteria</h4>
+      <ul>
+        <li><strong>Required capabilities:</strong> physical location, access to RF spectrum, or access to operator infrastructure.</li>
+        <li><strong>Complexity:</strong> required knowledge of radio protocols, cryptography, and implementation details.</li>
+        <li><strong>Detectability:</strong> whether unusual signaling patterns, RF behavior, or log entries could reveal the attack.</li>
+        <li><strong>Mitigations:</strong> standard-level defenses and deployment-level measures such as monitoring and configuration hardening.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p class="muted">
+      &copy; [Year] [Your Name].
+    </p>
+  </footer>
+</body>
+</html>

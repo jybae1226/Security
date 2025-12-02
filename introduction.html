@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Introduction – Security in 4G and 5G</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="logo">4G / 5G Security</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="introduction.html" class="active">Introduction</a></li>
+          <li><a href="mechanisms.html">Security Mechanisms</a></li>
+          <li><a href="attacks.html">Attacks &amp; Feasibility</a></li>
+          <li><a href="opinion.html">Opinion &amp; Conclusion</a></li>
+          <li><a href="references.html">References</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>1. Introduction</h1>
+      <p>
+        Mobile networks have become the main communication infrastructure for billions of users. 
+        4G/LTE enabled mobile broadband and always-on connectivity, while 5G promises ultra-low 
+        latency, massive machine-type communication, and support for critical services such as 
+        industrial control or connected vehicles. As a result, the security of these networks is 
+        directly linked to user privacy, safety, and even national security.
+      </p>
+      <p>
+        The goal of this project is to provide a clear description of the security mechanisms 
+        that protect 4G and 5G networks, to summarize known types of attacks against these systems, 
+        and to analyze the feasibility and complexity of these attacks from the perspective of a 
+        realistic attacker. The project is based on existing standards and research papers rather 
+        than on original experiments in an operator network.
+      </p>
+    </section>
+
+    <section>
+      <h3>2. Current State of the Art</h3>
+      <p>
+        4G/LTE and 5G are specified by the 3rd Generation Partnership Project (3GPP), which 
+        defines detailed security architectures for authentication, key management, and protection 
+        of both control-plane and user-plane traffic. Over the last decade, these specifications 
+        have evolved to address weaknesses discovered in earlier generations such as 2G and 3G, 
+        where encryption was optional and mutual authentication was often missing.
+      </p>
+      <p>
+        In 4G, the EPS-AKA protocol, a stronger key hierarchy, and mandatory integrity protection 
+        already delivered substantial improvements over previous systems. 5G further refines this 
+        model by introducing subscriber identity protection on the radio interface, a service-based 
+        core network architecture secured with modern web technologies (TLS, OAuth2), and more 
+        explicit handling of roaming and inter-operator trust.
+      </p>
+      <p>
+        At the same time, academic research has shown that even modern systems contain design 
+        and implementation flaws. Examples include protocol downgrades to weaker generations, 
+        fake base stations that exploit residual weaknesses in the attachment procedures, 
+        side-channel based location tracking, and misconfigurations of 5G service-based 
+        interfaces. Therefore, the state of the art in mobile network security is a balance 
+        between strong standardized mechanisms and practical vulnerabilities in deployments.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p class="muted">
+      &copy; [Year] [Your Name].
+    </p>
+  </footer>
+</body>
+</html>

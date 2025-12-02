@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Security Mechanisms – 4G and 5G</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="logo">4G / 5G Security</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="introduction.html">Introduction</a></li>
+          <li><a href="mechanisms.html" class="active">Security Mechanisms</a></li>
+          <li><a href="attacks.html">Attacks &amp; Feasibility</a></li>
+          <li><a href="opinion.html">Opinion &amp; Conclusion</a></li>
+          <li><a href="references.html">References</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>3. Security Architecture &amp; Mechanisms</h1>
+      <p>
+        This page summarizes how 4G and 5G secure subscriber identity, authenticate devices and networks, 
+        derive cryptographic keys, and protect signaling and user data.
+      </p>
+    </section>
+
+    <section>
+      <h3>3.1 4G (LTE) Security</h3>
+      <ul>
+        <li>
+          <strong>Authentication (EPS-AKA):</strong> mutual authentication between the User 
+          Equipment (UE), the serving base station (eNodeB), and the core network (EPC) using 
+          long-term credentials stored in the USIM and in the operator's Home Subscriber Server (HSS).
+        </li>
+        <li>
+          <strong>Key hierarchy:</strong> a master key <em>K</em> is used to derive K<sub>ASME</sub> 
+          and then further keys such as KeNB for the radio interface. This limits the impact of 
+          key compromise and supports key refresh during mobility.
+        </li>
+        <li>
+          <strong>Confidentiality and integrity:</strong> standardized algorithms (for example, 
+          AES or SNOW 3G based) provide encryption and integrity protection for control-plane 
+          signaling and, optionally, for user-plane data.
+        </li>
+        <li>
+          <strong>Separation of planes:</strong> different keys and security associations for control 
+          and user plane, so that signaling remains protected even if user data is handled by 
+          intermediate gateways and tunnels.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>3.2 5G Security Enhancements</h3>
+      <ul>
+        <li>
+          <strong>5G-AKA and subscriber identity protection:</strong> the permanent subscriber 
+          identifier (SUPI) is never sent in clear over the air. Instead, a concealed identifier (SUCI) 
+          is transmitted, protecting users from passive IMSI-catching style attacks.
+        </li>
+        <li>
+          <strong>Service-Based Architecture (SBA):</strong> core network functions communicate via 
+          HTTP/2 and JSON APIs secured with TLS and modern authentication/authorization mechanisms, 
+          aligning mobile network security with common IT security practices.
+        </li>
+        <li>
+          <strong>Roaming and home control:</strong> the home network has more control over 
+          authentication decisions and can better enforce its policies even when the subscriber 
+          is served by a visited network.
+        </li>
+        <li>
+          <strong>Network slicing:</strong> logical networks (slices) are isolated and can be 
+          configured with different security policies depending on the service (e.g., massive 
+          IoT vs. ultra-reliable low-latency communication).
+        </li>
+      </ul>
+
+      <div class="tag-list">
+        <span class="tag">Authentication</span>
+        <span class="tag">Key Management</span>
+        <span class="tag">Encryption</span>
+        <span class="tag">Integrity Protection</span>
+        <span class="tag">Privacy</span>
+        <span class="tag">Network Slicing</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="muted">
+      &copy; [Year] [Your Name].
+    </p>
+  </footer>
+</body>
+</html>
