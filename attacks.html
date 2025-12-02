@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+  .hero {
+    padding-bottom: 0rem !important;
+  }
+</style>
+</style>
 <head>
   <meta charset="UTF-8" />
   <title>Attacks &amp; Feasibility – 4G/5G Security</title>
@@ -25,68 +31,141 @@
 
   <main>
     <section class="hero">
-      <h1>4. Known Attacks and Feasibility Analysis</h1>
+      <h1>3. Known Attacks and Feasibility Analysis</h1>
       <p>
-        This page describes representative attacks against 4G and 5G networks and evaluates their 
-        feasibility in terms of attacker capabilities, technical complexity, and required budget.
+        This page presents representative attacks against 4G and 5G networks and evaluates how feasible 
+        they are in practice based on attacker capabilities, required equipment, complexity, and 
+        current countermeasures.
       </p>
     </section>
 
     <section>
-      <h3>4.1 Signaling and Protocol-Level Attacks</h3>
+      <h3>3.1 Downgrade and Fake Base-Station Attacks</h3>
+
+      <h4>What it is</h4>
+      <p>
+        A downgrade attack forces a 4G/5G-capable device to fall back to an older, less secure 
+        technology such as 2G or 3G. A fake base station (also known as an IMSI catcher or stingray) 
+        impersonates a legitimate cell to make nearby devices connect to it. These attacks exploit 
+        weaker security in legacy networks, where encryption or mutual authentication may be absent.
+      </p>
+
+      <h4>Key concepts</h4>
       <ul>
-        <li>
-          <strong>Downgrade attacks:</strong> an attacker operates a fake base station that forces 
-          devices to connect using weaker generations (2G/3G) where encryption or mutual 
-          authentication may be absent, enabling eavesdropping or impersonation.
-        </li>
-        <li>
-          <strong>Attach and tracking area update abuse:</strong> by manipulating attach/TAU 
-          procedures, an attacker can cause denial of service for specific subscribers or 
-          infer their presence in a given area.
-        </li>
-        <li>
-          <strong>Fake base stations (IMSI catchers):</strong> devices are tricked into 
-          connecting to a rogue station that requests identifiers or exploits missing checks 
-          in early connection stages.
-        </li>
+        <li><strong>IMSI catcher:</strong> A rogue base station that attempts to extract permanent identifiers from devices.</li>
+        <li><strong>Legacy networks:</strong> Older technologies where encryption or integrity protection may not be enforced.</li>
       </ul>
+
+      <h4>How the attack works</h4>
+      <ul>
+        <li>The attacker sets up a fake base station advertising strong signal power but only supporting 2G/3G.</li>
+        <li>Devices prioritizing connectivity may camp on this rogue station if downgrades are allowed.</li>
+        <li>In 2G/3G, the attacker can request the IMSI in plaintext and may intercept or modify traffic if encryption is weak.</li>
+      </ul>
+
+      <h4>Feasibility under current security</h4>
+      <p>
+        Modern smartphones and operators often restrict 2G/3G fallback, reducing the impact. However, these attacks 
+        remain feasible in regions where older networks are still active. 4G/5G security alone cannot fully stop a 
+        device from being forced to a weaker technology; mitigation depends on operator policy, device settings, and 
+        the gradual deprecation of insecure legacy systems.
+      </p>
     </section>
 
     <section>
-      <h3>4.2 User Privacy and Location Tracking</h3>
+      <h3>3.2 Signaling Abuse and Denial-of-Service</h3>
+
+      <h4>What it is</h4>
+      <p>
+        Signaling-based attacks target attach, tracking area update (TAU), and mobility management procedures. 
+        Manipulating these messages can lead to denial-of-service (DoS) for specific subscribers or entire cells.
+      </p>
+
+      <h4>Key concepts</h4>
       <ul>
-        <li>
-          <strong>Identifier re-use:</strong> if temporary identifiers (such as GUTI or 5G-GUTI) 
-          are not refreshed frequently enough, an attacker can correlate them over time and 
-          build movement profiles of a subscriber.
-        </li>
-        <li>
-          <strong>Paging analysis:</strong> by monitoring paging messages in a cell and combining 
-          them with external triggers (such as sending messages or calls), an attacker can 
-          infer whether a specific subscriber is currently in a region.
-        </li>
+        <li><strong>TAU (Tracking Area Update):</strong> The process by which a UE notifies the network of movement across areas.</li>
+        <li><strong>DoS:</strong> Disrupting service availability for legitimate users.</li>
       </ul>
+
+      <h4>How the attack works</h4>
+      <ul>
+        <li>An attacker using a rogue base station or certain privileged interfaces triggers abnormal signaling sequences.</li>
+        <li>Repeated attach or TAU requests can overload network elements or cause targeted subscribers to be detached.</li>
+        <li>Some flaws allow a UE to be forced into a “no service” state until rebooting or re-attaching.</li>
+      </ul>
+
+      <h4>Feasibility under current security</h4>
+      <p>
+        Many vulnerabilities found in early LTE deployments have been mitigated through standard updates and vendor patches. 
+        However, signaling DoS remains difficult to eliminate entirely because attackers can craft messages that appear 
+        protocol-compliant. Detection therefore relies heavily on anomaly analysis and operator monitoring, rather than 
+        on cryptographic protection alone.
+      </p>
     </section>
 
     <section>
-      <h3>4.3 Core Network and SBA Attacks</h3>
+      <h3>3.3 Privacy Attacks via Paging and Temporary Identifiers</h3>
+
+      <h4>What it is</h4>
+      <p>
+        Paging is the broadcast mechanism used to locate a device when incoming traffic arrives. By monitoring paging 
+        messages and correlating them with external triggers, attackers can infer whether a specific subscriber is present 
+        in a particular area.
+      </p>
+
+      <h4>Key concepts</h4>
       <ul>
-        <li>
-          <strong>Exploiting misconfigured APIs:</strong> 5G core network functions expose 
-          HTTP-based interfaces. If TLS, certificates, or access control are misconfigured, 
-          attackers may gain unauthorized access to signaling or subscriber data.
-        </li>
-        <li>
-          <strong>Slice isolation failures:</strong> incorrect configuration of network slices 
-          can allow one tenant or service to affect the performance or security of another, 
-          undermining the isolation promised by network slicing.
-        </li>
+        <li><strong>Paging message:</strong> Broadcast packet containing a temporary identifier (e.g., S-TMSI, GUTI, 5G-GUTI).</li>
+        <li><strong>Linkability:</strong> Ability to correlate repeated identifiers over time and track a subscriber.</li>
       </ul>
+
+      <h4>How the attack works</h4>
+      <ul>
+        <li>The attacker passively records paging messages using low-cost SDR equipment.</li>
+        <li>By triggering events for a target (e.g., messaging, call attempts), they correlate paging timing with their actions.</li>
+        <li>Through repeated observations, they can determine presence and movement patterns of the subscriber.</li>
+      </ul>
+
+      <h4>Feasibility under current security</h4>
+      <p>
+        4G and 5G reduce long-term tracking by frequently refreshing temporary identifiers, but operational choices affect 
+        effectiveness. SUCI protects permanent identities but cannot prevent paging-based side-channel attacks entirely, 
+        since paging is a fundamental network operation. Thus, these attacks remain moderately feasible with passive equipment.
+      </p>
     </section>
 
     <section>
-      <h3>4.4 Feasibility and Complexity Summary</h3>
+      <h3>3.4 Attacks on 5G Service-Based Architecture (SBA)</h3>
+
+      <h4>What it is</h4>
+      <p>
+        5G core functions communicate via HTTP/2-based APIs. If authentication, TLS, or authorization is misconfigured, 
+        attackers may exploit these interfaces to gain unauthorized access or disrupt network functions.
+      </p>
+
+      <h4>Key concepts</h4>
+      <ul>
+        <li><strong>API (Application Programming Interface):</strong> REST-like service interface exposed by 5G network functions.</li>
+        <li><strong>Misconfiguration:</strong> Weak certificates, improper TLS settings, or overly permissive access control.</li>
+      </ul>
+
+      <h4>How the attack works</h4>
+      <ul>
+        <li>The attacker gains a foothold inside the operator’s internal network (compromised host, insider, or misconfigured firewall).</li>
+        <li>They scan for exposed service-based interfaces and attempt calls without proper credentials.</li>
+        <li>If validation is weak, they may read subscriber data, trigger signaling, or disable functions.</li>
+      </ul>
+
+      <h4>Feasibility under current security</h4>
+      <p>
+        While 5G standards require strong mutual TLS and strict authorization, real-world deployments may deviate due to 
+        operational complexity. SBA-related attacks are therefore considered one of the major emerging risks in 5G networks.
+      </p>
+    </section>
+
+    <section>
+      <h3>3.5 Feasibility and Complexity Summary</h3>
+
       <table class="attack-table">
         <thead>
           <tr>
@@ -124,19 +203,12 @@
             <td>Legacy devices</td>
             <td>Medium</td>
             <td>$$</td>
-            <td><span class="pill-low">Decreasing (as 2G is phased out)</span></td>
+            <td><span class="pill-low">Decreasing</span></td>
           </tr>
         </tbody>
       </table>
-
-      <h4>4.5 Evaluation Criteria</h4>
-      <ul>
-        <li><strong>Required capabilities:</strong> physical location, access to RF spectrum, or access to operator infrastructure.</li>
-        <li><strong>Complexity:</strong> required knowledge of radio protocols, cryptography, and implementation details.</li>
-        <li><strong>Detectability:</strong> whether unusual signaling patterns, RF behavior, or log entries could reveal the attack.</li>
-        <li><strong>Mitigations:</strong> standard-level defenses and deployment-level measures such as monitoring and configuration hardening.</li>
-      </ul>
     </section>
+
   </main>
 
   <footer>
