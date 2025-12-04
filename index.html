@@ -29,11 +29,12 @@
       </div>
       <h1>Security in 4G and 5G Mobile Networks</h1>
       <h2>Description of security mechanisms, attacks, and feasibility analysis</h2>
-      <p>
-        This project investigates how 4G and 5G mobile networks are protected, what types of 
-        attacks are possible in practice, and how complex and realistic these attacks are for 
-        different kinds of adversaries.
-      </p>
+      <div class="badge2"><text-medium><strong>Aim of this project</strong></text-medium></div>
+        <ul class="project-bullets">
+            <li>describe how 4G and 5G attempt to secure authentication, key management, radio traffic, and core network interfaces</li>
+            <li>give an overview of well-known attacks against these systems</li>
+            <li>analyze each attack and how feasible it is</li>
+        </ul>
       <div class="hero-meta">
         <span>Name: <strong>JongYeon Bae</strong></span>
         <span>Course: <strong>Fundamentals of the Security in Communications</strong></span>
@@ -43,41 +44,253 @@
       <h1>1. Introduction – What are 4G and 5G and why is security critical?</h1>
       </div>
       <p>
-        4G (LTE) and 5G are generations of cellular mobile network technology. 
-        4G, usually implemented as Long Term Evolution (LTE), introduced high-speed packet-switched data, 
-        making mobile broadband, video streaming, and real-time applications practical on smartphones and tablets. 
-        4G networks are based on the Evolved Packet System (EPS), which combines the radio access network (E-UTRAN) 
-        and the Evolved Packet Core (EPC) into an all-IP architecture.
+        Mobile communication systems have progressed from early analog technologies to 4G LTE and now 5G. 
+        This evolution has enabled higher data rates, lower latency, and more advanced applications. 
+        Alongside these improvements, the need for stronger and more adaptive security models has grown significantly. 
+        This project provides an in-depth comparison of 4G and 5G security mechanisms, 
+        supported by both architectural analysis and telecommunications research.
       </p>
+      <h4>1.1 What is 4G?</h4>
       <p>
-        5G, or Fifth-Generation mobile networks, builds on this by targeting much higher data rates, 
-        ultra-low latency, and support for massive numbers of devices. 5G New Radio (NR) and 
-        the 5G Core (5GC) are designed to serve three broad categories of services: 
-        enhanced Mobile Broadband (eMBB), ultra-reliable low-latency communications (URLLC), 
-        and massive machine-type communications (mMTC), which includes IoT devices and industrial systems.
+        4G, usually implemented as LTE (Long Term Evolution), is the fourth generation of mobile communication
+        technology. It was designed to provide high-speed, fully IP-based mobile broadband and to overcome
+        the limitations of 2G and 3G networks, such as limited data rates and separated voice/data infrastructures.
       </p>
-      <p>
-        In today’s mobile ecosystem, these networks are not only used for personal communication and 
-        entertainment but also for critical applications. Examples include connected and autonomous vehicles, 
-        industrial control systems, remote healthcare, smart grids, and public safety communication. 
-        As more sectors depend on mobile connectivity, any compromise of availability, integrity, 
-        or confidentiality in 4G/5G can have economic impact, damage the privacy of millions of users, 
-        or even endanger lives.
-      </p>
-      <p>
-        Security in mobile networks is therefore no longer just about preventing casual eavesdropping on voice calls. 
-        It must protect long-term identifiers (such as IMSI or SUPI), signaling integrity, user data, 
-        and the operation of complex service platforms. Attackers may range from individual hackers and 
-        criminal groups to state-sponsored actors. At the same time, the systems themselves have become more complex: 
-        5G introduces cloud-native deployments, a service-based architecture, and network slicing, 
-        which all increase the potential attack surface.
-      </p>
-      <div class="badge2"><text-big><strong>Aim of this project</strong></text-big></div>
+      <div class="badge2"><text-medium><strong>Key characteristics of 4G</strong></text-medium></div>
         <ul class="project-bullets">
-            <li>describe how 4G and 5G attempt to secure authentication, key management, radio traffic, and core network interfaces</li>
-            <li>give an overview of well-known attacks against these systems from the scientific literature</li>
-            <li>analyze, for each attack, how feasible it is in practice considering the required equipment, skills, cost, and detectability</li>
+            <li>Packet-switched voice via VoLTE</li>
+            <li>Radio bandwidth from 1.4 MHz to 20 MHz</li>
+            <li>Data rates ranging from 100 Mbps up to 1 Gbps (LTE-Advanced)</li>
+            <li>Latency typically 30–50 ms</li>
+            <li>Authentication via EPS-AKA (based on 3GPP AKA)</li>
         </ul>
+
+      <h5>1.1.1 Overall 4G System Architecture</h5>
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="images/EPS.png" alt="4G EPS Architecture Diagram" style="max-width: 100%; border-radius: 10px;">
+        <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
+          Figure: Simplified architecture of the 4G Evolved Packet System (EPS)
+        </p>
+      </div>
+      <p>
+        LTE is built around the <strong>Evolved Packet System (EPS)</strong>, which has two main parts:
+      </p>
+      <ul>
+        <li>
+          <strong>E-UTRAN (Evolved UMTS Terrestrial Radio Access Network)</strong> –
+          a network of <strong>eNodeB</strong> base stations that handle wireless transmission
+          to and from user equipment, scheduling of radio resources, and handover between cells.
+        </li>
+        <li>
+          <strong>EPC (Evolved Packet Core)</strong> –
+          the core network that manages mobility, user sessions, routing of IP packets,
+          and interconnection with external networks such as the public internet.
+        </li>
+      </ul>
+      <p>
+        Unlike previous generations, LTE treats both voice and data as IP packets. Voice services are provided
+        using <strong>Voice over LTE (VoLTE)</strong>, so there is no separate circuit-switched core.
+        This all-IP approach simplifies integration with other IP-based services and networks.
+      </p>
+
+      <h5>1.1.2 Functional Components of the EPC</h5>
+      <p>
+        The EPC is logically divided into several network elements, each responsible for a specific function:
+      </p>
+      <ul>
+        <li>
+          <strong>MME (Mobility Management Entity)</strong> – controls user attachment and detachment,
+          tracking area updates, and signaling related to mobility.
+        </li>
+        <li>
+          <strong>SGW (Serving Gateway)</strong> – anchors the user-plane traffic while the device moves
+          between eNodeBs and forwards data between the radio network and the core.
+        </li>
+        <li>
+          <strong>PGW (Packet Data Network Gateway)</strong> – provides connectivity to external IP networks,
+          applies policy and charging rules, and acts as the IP anchor point for the user.
+        </li>
+        <li>
+          <strong>HSS (Home Subscriber Server)</strong> – stores subscriber information, identifiers,
+          and parameters used when the user connects to the network.
+        </li>
+      </ul>
+
+      <h5>1.1.3 Radio Interface and Performance Goals</h5>
+      <p>
+        On the radio interface, LTE introduces several key technologies to increase capacity and improve user experience:
+      </p>
+      <ul>
+        <li>
+          <strong>OFDM/OFDMA</strong> – the downlink uses orthogonal frequency-division multiplexing
+          with many narrow subcarriers, which improves robustness against multipath fading and enables efficient
+          use of spectrum.
+        </li>
+        <li>
+          <strong>MIMO (Multiple Input Multiple Output)</strong> – multiple antennas at both the base station
+          and the device allow several data streams to be transmitted in parallel, increasing throughput.
+        </li>
+        <li>
+          <strong>Flexible bandwidths</strong> – LTE can operate with channel bandwidths from 1.4MHz up to
+          20MHz per carrier, and LTE-Advanced supports <strong>carrier aggregation</strong> to combine
+          several carriers for higher data rates.
+        </li>
+      </ul>
+      <p>
+        With these features, 4G aims for peak downlink data rates in the hundreds of megabits per second and
+        typical latencies in the tens of milliseconds. This makes it suitable for applications such as HD video streaming,
+        online gaming, and rich mobile web services.
+      </p>
+
+      <h4>1.2 What is 5G?</h4>
+      <p>
+        5G is the fifth generation of mobile networks and is designed not only as a faster evolution of LTE,
+        but also as a connectivity platform for very different types of services. Its main goals are extremely
+        high data rates, ultra-low latency, massive device connectivity, and high reliability for critical applications.
+      </p>
+      <div class="badge2"><text-medium><strong>Key characteristics of 5G</strong></text-medium></div>
+        <ul class="project-bullets">
+            <li>Sub-6 GHz and mmWave spectrum</li>
+            <li>Speeds up to 10 Gbps</li>
+            <li>Latency as low as 1 ms</li>
+            <li>Network slicing and virtualization</li>
+            <li>Stronger security through 5G-AKA, SUPI protection, and encrypted SBI interfaces</li>
+        </ul>
+      <h5>1.2.1 5G New Radio (NR)</h5>
+      <p>
+        The 5G air interface is called <strong>New Radio (NR)</strong>. It is highly flexible and operates in two
+        broad frequency ranges:
+      </p>
+      <ul>
+        <li>
+          <strong>FR1 (Frequency Range 1)</strong> – sub-6GHz bands, typically with channel bandwidths
+          of up to 100MHz.
+        </li>
+        <li>
+          <strong>FR2 (Frequency Range 2)</strong> – millimeter-wave bands, defined as 26.5 GHz to 71 GHz, 
+          with much wider channel bandwidths (up to 2000 MHz) enabling extreme data rates.
+        </li>
+      </ul>
+      <p>
+        5G NR combines large bandwidths with advanced antenna technologies such as massive MIMO and beamforming.
+        This enables gigabit-class data rates and very low over-the-air latency compared with LTE.
+      </p>
+
+      <h5>1.2.2 Deployment Options: NSA and SA</h5>
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="images/5G NR Deployment Options.png" alt="5G NR Deployment Options" style="max-width: 100%; border-radius: 10px;">
+        <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
+          Figure: 5G NR Deployment Options – Non-Stand-Alone (NSA) and Stand-Alone (SA)
+        </p>
+      </div>
+      <p>
+        In practical deployments, 5G can be introduced in two main configurations:
+      </p>
+      <ul>
+        <li>
+          <strong>Non-Stand-Alone (NSA)</strong> – 5G NR is used for the radio interface, but it is anchored
+          to the existing 4G EPC. Control signaling still relies on LTE, while high-speed user traffic can be
+          carried over NR.
+        </li>
+        <li>
+          <strong>Stand-Alone (SA)</strong> – the full 5G system is used, including NR and the new 5G Core (5GC).
+          SA enables the complete 5G feature set and is the target architecture for most operators.
+        </li>
+      </ul>
+      <p>
+        Networks are gradually moving from NSA to SA as operators deploy the 5G Core and migrate services.
+      </p>
+
+      <h5>1.2.3 5G Core and Service-Based Architecture</h5>
+      <p>
+        The <strong>5G Core (5GC)</strong> replaces the monolithic EPC with a
+        <strong>service-based architecture (SBA)</strong>. Instead of a few large nodes, the core is decomposed
+        into many smaller network functions that communicate using standardized APIs.
+      </p>
+      <ul>
+        <li>
+          <strong>AMF (Access and Mobility Management Function)</strong> – manages registration, connection handling,
+          and mobility procedures for user equipment.
+        </li>
+        <li>
+          <strong>SMF (Session Management Function)</strong> – sets up and manages PDU sessions and applies quality-of-service rules.
+        </li>
+        <li>
+          <strong>UPF (User Plane Function)</strong> – forwards user traffic and can be placed closer to the edge of
+          the network to reduce latency for delay-sensitive services.
+        </li>
+        <li>
+          <strong>Other functions</strong> – such as subscriber data management and policy control, which can be
+          instantiated and scaled independently as software components.
+        </li>
+      </ul>
+      <p>
+        This cloud-native design allows the core to scale horizontally, to be deployed in centralized data centers
+        or at the network edge, and to be updated more easily than traditional hardware-centric architectures.
+      </p>
+
+      <h5>1.2.4 Network Slicing and Service Types</h5>
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="images/Network Slicing.png" alt="Network Slicing" style="max-width: 100%; border-radius: 10px;">
+        <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
+          Figure: Network Slicing in 5G
+        </p>
+      </div>
+      <p>
+        A defining capability of 5G is <strong>network slicing</strong>, where a single physical infrastructure
+        is divided into multiple logical networks tailored to specific use cases. Typical service categories are:
+      </p>
+      <ul>
+        <li>
+          <strong>Enhanced Mobile Broadband (eMBB)</strong> – provides very high throughput and capacity for
+          applications such as 4K/8K video streaming and immersive media.
+        </li>
+        <li>
+          <strong>Ultra-Reliable Low-Latency Communications (URLLC)</strong> – targets time-critical services
+          requiring extremely low latency and high reliability, such as industrial automation or autonomous driving.
+        </li>
+        <li>
+          <strong>Massive Machine-Type Communications (mMTC)</strong> – connects huge numbers of low-power IoT
+          devices like sensors in smart cities and factories.
+        </li>
+      </ul>
+      <p>
+        Each slice can have its own performance targets, resource allocation, and policies. This flexibility is one
+        of the key reasons why 5G is viewed as a foundational technology for future digital infrastructure.
+      </p>
+
+      <h5>1.2.5 Performance Targets</h5>
+      <p>
+        Compared with LTE, 5G sets much more ambitious performance objectives:
+      </p>
+      <ul>
+        <li>Peak data rates of up to tens of gigabits per second in ideal conditions.</li>
+        <li>User-experienced data rates several times higher than 4G in dense areas.</li>
+        <li>End-to-end latency that can drop below 1ms for specific URLLC services.</li>
+        <li>Support for up to one million connected devices per square kilometer in mMTC scenarios.</li>
+      </ul>
+      <p>
+        These targets make 5G suitable not only for traditional mobile broadband but also as a universal connectivity
+        platform for industry, transportation, healthcare, and many other domains.
+      </p>
+
+      <h5>1.3 Why is security critical in 4G and 5G?</h5>
+      <p>
+        Security is essential in 4G and 5G because mobile networks have become core digital infrastructure.
+        These systems no longer support only voice and basic data—they now handle sensitive personal
+        information, financial transactions, real-time services, and large-scale IoT communication.
+      </p>
+      <ul class="project-bullets">
+        <li><strong>They carry sensitive user data</strong> such as authentication tokens, location, and financial information.</li>
+        <li><strong>They support critical infrastructure</strong> including healthcare, transportation, and emergency services.</li>
+        <li><strong>All-IP operation increases exposure</strong> to traditional internet-based cyberattacks.</li>
+        <li><strong>Massive IoT connectivity</strong> creates many new potential attack points.</li>
+        <li><strong>Virtualized 5G architectures</strong> introduce risks in APIs, cloud systems, and software supply chains.</li>
+      </ul>
+      <p>
+        Because 4G and 5G function as essential communication platforms for society, any security breach can have
+        widespread consequences. Strong, adaptable security mechanisms are therefore fundamental to their design.
+      </p>
     </section>
   </main>
 

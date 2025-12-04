@@ -280,5 +280,26 @@ footer {
 }
 
 text-big {
-    font-size: 1rem;
+  font-size: 1rem;
+}
+
+text-medium {
+  font-size: 0.8rem;
+}
+
+section h4{
+  margin-top: 0rem;
+  font-size: 1.5rem;
+  color: #f9fafb;
+}
+
+section h5 {
+  margin-top: 1rem;
+  margin-bottom: 0.2rem;
+  font-size: 1.5rem;
+  color: #f9fafb;
+}
+
+.margin2 {
+  margin-top: 50px;
 }
