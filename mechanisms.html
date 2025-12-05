@@ -31,251 +31,320 @@
     <section class="hero">
       <h1>2. Security Architecture &amp; Mechanisms</h1>
       <p>
-        This page summarizes how 4G and 5G secure subscriber identity, authenticate devices and networks, 
-        derive cryptographic keys, and protect signaling and user data. It first explains the main 
-        security mechanisms in 4G (LTE), then describes new mechanisms introduced in 5G, and finally 
-        highlights concepts that are common to both generations.
+        This page explains how 4G and 5G protect subscribers and network resources through
+        authentication, key management, and confidentiality and integrity protection. It first
+        describes the main security mechanisms in 4G (LTE), then presents new or strengthened
+        mechanisms in 5G, and finally highlights core concepts that remain common across both
+        generations.
       </p>
-    </section>
+    
+      <h4>2.1 Security Mechanisms in 4G (LTE)</h4>
 
-    <section>
-      <h3>2.1 Security Mechanisms in 4G (LTE)</h3>
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="images/Overview of the security architecture(4G).png" alt="Overview of the security architecture (4G)" style="max-width: 80%; border-radius: 10px;">
+        <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
+          Figure: Overview of the security architecture (4G LTE)
+        </p>
+      </div>
 
-      <h4>2.1.1 EPS-AKA: Authentication and Key Agreement</h4>
+      <h5>2.1.1 EPS-AKA: Authentication and Key Agreement</h5>
       <p>
-        EPS-AKA (Evolved Packet System Authentication and Key Agreement) is the main authentication 
-        protocol used in 4G/LTE networks. It provides mutual authentication between the User Equipment (UE), 
-        the serving network, and the home network, and it establishes fresh cryptographic keys for later use.
+        EPS-AKA (Evolved Packet System Authentication and Key Agreement) is the primary
+        authentication and key establishment protocol in 4G/LTE. It provides mutual authentication
+        between the User Equipment (UE) and the core network and establishes fresh keys that are
+        later used to protect NAS signalling and radio traffic within the Evolved Packet System.
       </p>
 
       <p><strong>Basic roles.</strong></p>
       <ul>
-        <li><strong>UE:</strong> the user’s device together with the USIM card, which stores a long-term secret key.</li>
-        <li><strong>Home Subscriber Server (HSS):</strong> a core network element that stores subscriber identities and long-term keys.</li>
-        <li><strong>Serving network:</strong> the local network currently providing service to the UE.</li>
+        <li><strong>UE:</strong> the user’s device and USIM, which stores a long-term secret key and subscriber identity.</li>
+        <li><strong>Home Subscriber Server (HSS):</strong> core database that holds subscriber profiles and the long-term keys.</li>
+        <li><strong>Serving network:</strong> the visited or serving PLMN currently providing EPS service to the UE.</li>
       </ul>
 
-      <p><strong>How it works (principle).</strong></p>
+      <p><strong>How it works.</strong></p>
       <ul>
-        <li>The serving network requests an authentication vector from the HSS for a given subscriber.</li>
+        <li>The serving network requests one or more authentication vectors from the HSS for the target subscriber.</li>
         <li>
-          The HSS generates a random challenge (RAND), an expected response (XRES), a cipher key (CK), 
-          an integrity key (IK), and an authentication token (AUTN) using the long-term key shared 
-          with the USIM.
+          The HSS, using the long-term key shared with the USIM, generates a random challenge (RAND),
+          an expected response (XRES), a cipher key (CK), an integrity key (IK), and an
+          authentication token (AUTN).
         </li>
-        <li>The serving network sends RAND and AUTN to the UE.</li>
-        <li>The USIM verifies AUTN to authenticate the network and ensure the challenge is fresh (replay protection).</li>
-        <li>If verification succeeds, the USIM computes a response RES and sends it back.</li>
+        <li>The serving network sends RAND and AUTN to the UE as an authentication request.</li>
+        <li>The USIM verifies AUTN to authenticate the network and to ensure the challenge is fresh, preventing replay attacks.</li>
+        <li>If verification succeeds, the USIM computes the response RES and returns it to the serving network.</li>
         <li>The serving network compares RES with XRES; if they match, the UE is authenticated.</li>
-        <li>From CK and IK, the network derives further keys such as K<sub>ASME</sub> for signaling and radio encryption.</li>
+        <li>
+          From CK and IK, both sides derive the EPS security master key K<sub>ASME</sub>, which will be
+          further expanded into keys for NAS and radio protection.
+        </li>
       </ul>
 
       <p><strong>Why it matters.</strong></p>
       <p>
-        EPS-AKA protects against impersonation of both the subscriber and the network and enables secure 
-        key establishment without revealing the long-term secret key. However, attackers can still exploit 
-        weaknesses in early stages of the attachment procedure or in how authentication is triggered, 
-        for example by using fake base stations to repeatedly force authentication attempts.
+        EPS-AKA ensures that only legitimate subscribers attach to the EPS and that the network is
+        authentic in the eyes of the UE. It also ensures that session keys are freshly derived each
+        time, without exposing the long-term secret. However, the procedure can still be abused by
+        adversaries that repeatedly trigger authentication or exploit weaknesses in how and when
+        authentication is initiated.
       </p>
 
-      <hr />
-
-      <h4>2.1.2 Radio Interface Security: NAS and RRC Ciphering and Integrity</h4>
+      <h5>2.1.2 Radio Interface Security: NAS and RRC Ciphering and Integrity</h5>
       <p>
-        4G protects signaling and, optionally, user data over the radio interface using two protocol layers:
+        In 4G, signalling and user data over the radio interface are protected at two logical layers:
       </p>
       <ul>
         <li>
-          <strong>Non-Access Stratum (NAS):</strong> signaling between the UE and the core network 
-          (attach, detach, tracking area update, etc.).
+          <strong>Non-Access Stratum (NAS):</strong> signalling between the UE and the MME in the core network,
+          used for procedures such as attach, detach, and tracking area updates.
         </li>
         <li>
-          <strong>Radio Resource Control (RRC):</strong> signaling between the UE and the base station (eNodeB) 
-          to configure radio bearers, handovers, and related functions.
+          <strong>Radio Resource Control (RRC):</strong> signalling between the UE and the eNodeB, used to configure
+          radio bearers, perform handovers, and manage radio connections.
         </li>
       </ul>
       <p>
-        Both NAS and RRC can be protected with ciphering (encryption) and integrity protection 
-        (message authentication).
+        For both NAS and RRC, LTE supports ciphering (confidentiality protection) and integrity
+        protection (message authentication and anti-tampering).
       </p>
 
       <p><strong>How it works.</strong></p>
       <ul>
-        <li>After EPS-AKA, the UE and network share the master key K<sub>ASME</sub>.</li>
+        <li>After EPS-AKA, the UE and the core share K<sub>ASME</sub> as the EPS master key.</li>
         <li>
-          From K<sub>ASME</sub>, the network derives NAS keys (K<sub>NASenc</sub>, K<sub>NASint</sub>) and later 
-          RRC and user-plane keys (K<sub>eNB</sub>, then K<sub>RRC</sub>, K<sub>UP</sub>, etc.).
+          From K<sub>ASME</sub>, the network derives NAS keys (K<sub>NASenc</sub>, K<sub>NASint</sub>). Once
+          the UE is connected to an eNodeB, K<sub>ASME</sub> is also used to derive K<sub>eNB</sub>, which is then
+          expanded into RRC and user-plane keys (K<sub>RRCenc</sub>, K<sub>RRCint</sub>, K<sub>UPenc</sub>, etc.).
         </li>
         <li>
-          Encryption algorithms such as AES-based or SNOW 3G-based ciphers protect confidentiality 
-          of signaling and user data.
+          Standardized algorithms (for example, AES-, SNOW 3G-, and ZUC-based schemes) encrypt user data and signalling so
+          that passive eavesdroppers cannot read the traffic.
         </li>
         <li>
-          Integrity algorithms compute a Message Authentication Code (MAC) over signaling messages 
-          so that any tampering can be detected.
+          Integrity algorithms compute a Message Authentication Code (MAC) over protected signalling messages,
+          allowing the receiver to detect modification or forgery.
         </li>
       </ul>
 
       <p><strong>Why it matters.</strong></p>
       <p>
-        Radio interface security prevents passive eavesdropping and active manipulation by attackers 
-        listening on the air interface. However, messages sent before security activation, and 
-        misconfigurations where integrity protection is not enforced, have enabled practical attacks 
-        that affect privacy or availability.
+        Radio interface security protects against attackers who try to listen in or inject messages
+        over the air. Without it, the confidentiality and correctness of signalling and user-plane
+        data could not be guaranteed. In practice, however, messages sent before security activation
+        or misconfigurations have enabled concrete attacks. Crucially, standard LTE lacks integrity protection 
+        for the user plane (unlike 5G), leaving user data potentially vulnerable to manipulation even if encrypted.
       </p>
 
-      <hr />
-
-      <h4>2.1.3 Network Domain Security (NDS/IPsec) in the Core</h4>
+      <h5>2.1.3 Network Domain Security (NDS/IPsec) in the Core</h5>
       <p>
-        Within the operator’s core network, communication between elements such as the MME, SGW, and PGW 
-        often runs over IP networks. Network Domain Security (NDS) defines how to protect these internal 
-        links using IPsec tunnels, a standard mechanism for authenticating and encrypting IP traffic.
+        Inside and between operator networks, communication between core elements such as MME, SGW,
+        PGW, and HSS runs over IP infrastructure. Network Domain Security (NDS) defines how operators
+        should protect these internal and inter-operator links using IPsec tunnels and related
+        mechanisms.
       </p>
 
       <p><strong>How it works.</strong></p>
       <ul>
-        <li>Security Gateways (SEGs) establish IPsec Security Associations (SAs) using Internet Key Exchange (IKE).</li>
         <li>
-          Once SAs are established, IPsec in Encapsulating Security Payload (ESP) mode provides encryption and 
-          integrity for all traffic between protected domains.
+          Security gateways or firewalls at the edge of protected domains establish IPsec Security
+          Associations (SAs) using the Internet Key Exchange (IKE) protocol.
         </li>
         <li>
-          Security policies determine which traffic must be protected, such as signaling between MMEs and HSS 
-          or between core nodes in different data centers.
+          Once SAs are in place, IPsec in Encapsulating Security Payload (ESP) mode provides
+          encryption and integrity protection for IP packets that traverse the secured links.
+        </li>
+        <li>
+          Security policies define which IP flows (for example, signalling between MMEs and HSS
+          or between core sites) must be carried inside IPsec tunnels.
         </li>
       </ul>
 
       <p><strong>Why it matters.</strong></p>
       <p>
-        NDS/IPsec reduces the risk that an attacker inside the operator’s IP network can intercept or modify 
-        core signaling. Misconfigured or unprotected interfaces, especially toward third-party networks or 
-        roaming partners, nonetheless remain an important source of vulnerabilities.
+        NDS/IPsec prevents unauthorized parties on the operator’s backbone or at peering points from
+        observing or tampering with core signalling. However, failures in policy configuration,
+        missing protection on some interfaces, or weak perimeter controls can still create exploitable
+        gaps, especially in roaming or multi-operator scenarios.
       </p>
-    </section>
+    
+      <h4>2.2 Security Mechanisms in 5G</h4>
 
-    <section>
-      <h3>2.2 Security Mechanisms in 5G</h3>
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="images/Overview of the security architecture(5G).png" alt="Overview of the security architecture (5G)" style="max-width: 80%; border-radius: 10px;">
+        <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
+          Figure: Overview of the security architecture (5G)
+        </p>
+      </div>
 
-      <h4>2.2.1 5G-AKA and EAP-AKA′</h4>
+      <h5>2.2.1 5G-AKA and EAP-AKA'</h5>
       <p>
-        5G introduces an updated authentication framework with two main options: 5G-AKA and EAP-AKA′. 
-        Both provide mutual authentication and key agreement between the UE, the Serving Network (SN), 
-        and the Home Network (HN), with improved handling of roaming and stronger control by the home network.
+        5G introduces an enhanced authentication framework with two main options for primary
+        authentication: 5G-AKA and EAP-AKA'. Both are based on the same long-term key material
+        stored in the USIM but improve how keys are bound to serving networks and how roaming
+        scenarios are handled compared with LTE.
+      </p>
+
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="images/Authentication procedure for 5G AKA.png" alt="Authentication procedure for 5G AKA" style="max-width: 80%; border-radius: 10px;">
+        <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
+          Figure: Authentication procedure for 5G AKA
+        </p>
+      </div>
+
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="images/Authentication procedure for EAP-AKA'.png" alt="Authentication procedure for EAP-AKA'" style="max-width: 80%; border-radius: 10px;">
+        <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
+          Figure: Authentication procedure for EAP-AKA'
+        </p>
+      </div>
+
+      <p><strong>Key concepts.</strong></p>
+      <ul>
+        <li>
+          <strong>EAP (Extensible Authentication Protocol):</strong> a generic method for running
+          authentication protocols in a flexible way, used in many access technologies.
+        </li>
+        <li>
+          <strong>EAP-AKA' (EAP-AKA Prime):</strong> an EAP method that extends AKA and adds additional protections
+          against certain known vulnerabilities, specifically binding the keys to the serving network name.
+        </li>
+      </ul>
+
+      <p><strong>How it works.</strong></p>
+      <ul>
+        <li>The UE and the home network still share a long-term key stored in the USIM.</li>
+        <li>
+          An authentication procedure is run, either as native 5G-AKA or as EAP-AKA′ carried in NAS messages
+          between UE and AMF.
+        </li>
+        <li>
+          The home network explicitly participates in deciding whether authentication was successful and
+          which serving network is authorized to use the resulting security context.
+        </li>
+        <li>
+          The procedure yields a key K<sub>AUSF</sub>, from which K<sub>SEAF</sub> is derived. K<sub>SEAF</sub> is then used to derive K<sub>AMF</sub>, which in turn generates K<sub>gNB</sub> to establish specific keys for NAS, RRC, and user-plane protection.
+        </li>
+      </ul>
+
+      <p><strong>Why it matters.</strong></p>
+      <p>
+        5G-AKA and EAP-AKA′ address several design limitations of EPS-AKA, particularly in roaming
+        environments and in binding security contexts to serving networks. They also integrate more
+        naturally with other EAP-based systems that may share the same authentication infrastructure.
+        As in LTE, correct implementation and configuration remain essential for real security.
+      </p>
+
+      <h5>2.2.2 Subscriber Identity Protection: SUPI and SUCI</h5>
+      <p>
+        To mitigate long-standing privacy issues with IMSI exposure, 5G introduces a stronger identity
+        protection scheme based on distinguishing between a permanent identifier and a concealed one:
+      </p>
+      <ul>
+        <li><strong>SUPI (Subscription Permanent Identifier):</strong> the true subscriber identity stored in the USIM and home network.</li>
+        <li><strong>SUCI (Subscription Concealed Identifier):</strong> a privacy-preserving identifier obtained by encrypting the SUPI with the home network’s public key.</li>
+      </ul>
+
+      <p><strong>How it works.</strong></p>
+      <ul>
+        <li>The home network publishes a public key that UEs use to conceal their SUPI.</li>
+        <li>
+          Before initial registration, the USIM computes the SUCI from the SUPI using this public key,
+          and the SUCI is sent over the radio interface instead of the clear-text SUPI.
+        </li>
+        <li>Only the home network, which holds the corresponding private key, can recover the SUPI from the SUCI.</li>
+        <li>
+          After registration, temporary identifiers (such as 5G-GUTI) are used to further reduce exposure
+          of long-term identifiers in normal operation.
+        </li>
+      </ul>
+
+      <p><strong>Why it matters.</strong></p>
+      <p>
+        By encrypting the permanent identifier, SUCI makes it significantly harder for passive observers
+        to track subscribers using long-lived identifiers. Active attacks with fake base stations are not
+        fully eliminated, but the attack surface for large-scale identity collection is greatly reduced.
+      </p>
+
+      <h5>2.2.3 Service-Based Architecture (SBA) Security and SEPP</h5>
+      <p>
+        The 5G Core (5GC) is organized as a Service-Based Architecture (SBA), in which core functions
+        offer services to each other via HTTP/2 and JSON APIs on Service-Based Interfaces (SBI). To
+        secure this environment, 5G combines telecom-specific rules with standard IT security
+        mechanisms such as TLS, mutual authentication, and fine-grained authorization. For inter-operator
+        traffic, 5G introduces the Security Edge Protection Proxy (SEPP).
       </p>
 
       <p><strong>Key concepts.</strong></p>
       <ul>
-        <li><strong>EAP (Extensible Authentication Protocol):</strong> a generic framework used in many systems, including Wi-Fi.</li>
+        <li><strong>TLS (Transport Layer Security):</strong> provides confidentiality and integrity for TCP connections on SBI.</li>
         <li>
-          <strong>EAP-AKA′:</strong> an EAP method that reuses AKA but with additional protections against specific 
-          previously known attacks.
-        </li>
-      </ul>
-
-      <p><strong>How it works (high level).</strong></p>
-      <ul>
-        <li>The UE and home network still share a long-term key in the USIM.</li>
-        <li>The authentication exchange runs either as 5G-AKA (a 3GPP-specific protocol) or as EAP-AKA′ carried in NAS messages.</li>
-        <li>The home network has explicit control over authentication decisions and can more strongly bind the security context to the serving network identity.</li>
-        <li>The result is a master key K<sub>SEAF</sub>, from which keys for NAS, RRC, user plane, and service-based interfaces are derived.</li>
-      </ul>
-
-      <p><strong>Why it matters.</strong></p>
-      <p>
-        5G-AKA and EAP-AKA′ address limitations of LTE EPS-AKA, such as certain identity misbinding issues 
-        and weaknesses in roaming scenarios. They also integrate better with other EAP-based environments. 
-        Nonetheless, correct implementation in both USIMs and network elements is crucial, and several 
-        theoretical weaknesses and privacy questions are still researched.
-      </p>
-
-      <hr />
-
-      <h4>2.2.2 Subscriber Identity Protection: SUPI and SUCI</h4>
-      <p>
-        In LTE, the permanent subscriber identity (IMSI) can sometimes be exposed over the air, enabling 
-        IMSI-catcher attacks. 5G introduces two related concepts:
-      </p>
-      <ul>
-        <li><strong>SUPI (Subscription Permanent Identifier):</strong> the long-term subscriber identity, similar to the IMSI.</li>
-        <li><strong>SUCI (Subscription Concealed Identifier):</strong> a public-key-encrypted form of the SUPI that is sent over the radio interface.</li>
-      </ul>
-
-      <p><strong>How it works.</strong></p>
-      <ul>
-        <li>Each home network publishes a public key used for identity concealment.</li>
-        <li>The UE’s USIM encrypts the SUPI with this public key and generates the SUCI before transmission.</li>
-        <li>Only the home network, which holds the corresponding private key, can recover the original SUPI.</li>
-        <li>After registration, temporary identifiers (such as 5G-GUTI) are used for efficiency and additional privacy.</li>
-      </ul>
-
-      <p><strong>Why it matters.</strong></p>
-      <p>
-        SUCI significantly raises the bar for passive attackers attempting to track users by collecting 
-        long-term identifiers over the air. However, active attackers operating fake base stations may 
-        still exploit other protocol behaviors or insufficient refresh of temporary identifiers, so 
-        additional privacy measures and careful operational practices remain important.
-      </p>
-
-      <hr />
-
-      <h4>2.2.3 Service-Based Architecture (SBA) Security and SEPP</h4>
-      <p>
-        The 5G Core (5GC) adopts a Service-Based Architecture (SBA) in which core functions expose HTTP/2 
-        and JSON APIs to one another, called Service-Based Interfaces (SBI). To secure these interfaces, 
-        5G uses common IT security mechanisms such as TLS, mutual authentication, and authorization tokens. 
-        For communication between operators, 5G introduces the Security Edge Protection Proxy (SEPP).
-      </p>
-
-      <p><strong>Key concepts.</strong></p>
-      <ul>
-        <li><strong>TLS (Transport Layer Security):</strong> protocol providing encryption and authentication for TCP connections.</li>
-        <li>
-          <strong>SEPP:</strong> a gateway that protects signaling on the N32 interface between different operators’ 5G cores, 
-          adding integrity and confidentiality for selected message fields.
+          <strong>SEPP:</strong> a special network function at the edge of each PLMN that protects signalling on the N32
+          interface between different operators’ 5G cores by adding application-layer integrity and
+          confidentiality where needed.
         </li>
       </ul>
 
       <p><strong>How it works.</strong></p>
       <ul>
-        <li>Each Network Function (NF) authenticates to others using certificates issued by a trusted PKI or local CA.</li>
-        <li>HTTP requests on the SBI are protected by TLS, and access control is enforced based on NF identities and authorization policies.</li>
-        <li>When messages cross operator boundaries, SEPPs on both sides sign and selectively encrypt parts of the signaling so that only authorized entities can read or modify them.</li>
+        <li>
+          Each Network Function (NF) obtains a certificate and uses it to authenticate itself when
+          establishing TLS-protected SBI connections.
+        </li>
+        <li>
+          Access control is enforced so that only authorized NFs can invoke specific APIs, often
+          using tokens and policies managed by functions like the NRF.
+        </li>
+        <li>
+          When signalling crosses operator boundaries, SEPPs on both sides apply signing and selective
+          encryption of message fields so that intermediate networks cannot read or alter sensitive data.
+        </li>
       </ul>
 
       <p><strong>Why it matters.</strong></p>
       <p>
-        Using well-known web security mechanisms helps bridge telecom and IT security and allows reuse of mature tools. 
-        At the same time, it introduces familiar web-style risks: misconfigured TLS, poor certificate management, 
-        and vulnerable APIs. Research shows that improper deployment of SBA can create serious vulnerabilities 
-        even if the specifications themselves are sound.
-      </p>
-    </section>
-
-    <section>
-      <h3>2.3 Security Mechanisms Common to Both 4G and 5G</h3>
-
-      <h4>2.3.1 Hierarchical Key Management</h4>
-      <p>
-        Both 4G and 5G use a hierarchical key management scheme:
-      </p>
-      <ul>
-        <li>A long-term key in the USIM, shared only with the home network.</li>
-        <li>An intermediate master key derived during AKA (K<sub>ASME</sub> in LTE, K<sub>SEAF</sub> in 5G).</li>
-        <li>Separate keys for NAS, RRC, and user-plane traffic, and in some cases per-bearer keys.</li>
-      </ul>
-      <p>
-        This hierarchy limits damage if a single radio connection key is compromised, since the attacker 
-        should not gain access to the master or long-term keys. It also enables re-keying during mobility 
-        and handovers without re-running full authentication.
+        SBA security and SEPP are essential for protecting 5G’s more open, API-driven core. They reduce
+        the risk that compromised or rogue elements can misuse core APIs or intercept roaming traffic,
+        but they also bring typical web-security challenges such as certificate management and API
+        hardening into the telecom domain.
       </p>
 
-      <h4>2.3.2 Use of Standardized Cryptographic Algorithms</h4>
+      <h4>2.3 Security Mechanisms Common to Both 4G and 5G</h4>
+
+      <h5>2.3.1 Hierarchical Key Management</h5>
       <p>
-        Both generations rely on standardized cryptographic algorithms that have been reviewed by 3GPP and 
-        external experts, for example AES-based stream ciphers and integrity algorithms. In practice, most 
-        vulnerabilities stem from protocol design, implementation bugs, or configuration errors rather than 
-        from the underlying cryptographic primitives.
+        Both 4G and 5G rely on a layered key hierarchy. At the root, a long-term key is stored in
+        the USIM and in the home network. Each authentication run derives an intermediate master key
+        (K<sub>ASME</sub> in LTE, K<sub>SEAF</sub> in 5G). From that, distinct keys are derived for NAS,
+        RRC, and user-plane protection. In 5G, this hierarchy is deeper (involving K<sub>AMF</sub> and K<sub>gNB</sub>)
+        to better support service based architecture and radio separation.
+      </p>
+
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="images/Key hierarchy generation in 5GS.png" alt="Key hierarchy generation in 5GS" style="max-width: 80%; border-radius: 10px;">
+        <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
+          Figure: Key hierarchy generation in 5GS
+        </p>
+      </div>
+      
+      <p>
+        This design limits the impact of key compromise: exposure of one radio connection key does not
+        directly reveal the master key or the long-term secret. It also enables efficient handover and
+        mobility, since new keys can be derived as the UE moves without repeating the full authentication
+        with the home network every time.
+      </p>
+
+      <h5>2.3.2 Use of Standardized Cryptographic Algorithms</h5>
+      <p>
+        Both generations use a small set of standardized, publicly reviewed cryptographic algorithms
+        for encryption and integrity protection. These include AES-based, SNOW 3G–based, and ZUC-based ciphers, and
+        MAC algorithms designed specifically for 3GPP systems. In real deployments, most security
+        issues have arisen from protocol design choices, implementation bugs, or misconfiguration,
+        rather than catastrophic failures of these primitives.
+      </p>
+      <p>
+        As a result, secure operation of 4G and 5G depends not only on choosing strong algorithms, but
+        also on correctly implementing key management, enforcing integrity protection where required,
+        and maintaining robust operational practices around both radio and core network elements.
       </p>
     </section>
   </main>
