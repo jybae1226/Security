@@ -41,7 +41,7 @@
       <h4>2.1 Security Mechanisms in 4G (LTE)</h4>
 
       <div style="text-align:center; margin: 20px 0;">
-        <img src="images/Overview of the security architecture(4G).png" alt="Overview of the security architecture (4G)" style="max-width: 60%; border-radius: 10px;">
+        <img src="images/security/Overview of the security architecture(4G).png" alt="Overview of the security architecture (4G)" style="max-width: 60%; border-radius: 10px;">
         <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
           Figure: Overview of the security architecture (4G LTE)
         </p>
@@ -56,7 +56,7 @@
       </p>
 
       <div style="text-align:center; margin: 20px 0;">
-        <img src="images/EPS AKA authentication .png" alt="EPS AKA authentication " style="max-width: 50%; border-radius: 10px;">
+        <img src="images/security/EPS AKA authentication .png" alt="EPS AKA authentication " style="max-width: 50%; border-radius: 10px;">
         <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
           Figure: EPS AKA authentication 
         </p>
@@ -138,8 +138,10 @@
         Radio interface security protects against attackers who try to listen in or inject messages
         over the air. Without it, the confidentiality and correctness of signalling and user-plane
         data could not be guaranteed. In practice, however, messages sent before security activation
-        or misconfigurations have enabled concrete attacks. Crucially, standard LTE lacks integrity protection 
-        for the user plane (unlike 5G), leaving user data potentially vulnerable to manipulation even if encrypted.
+        or misconfigurations have enabled concrete attacks. Crucially, although LTE defines user-plane 
+        integrity protection algorithms in the standard, their use is optional and not enabled in most 
+        commercial deployments. In contrast, 5G maintains a similar optional integrity‐protection mechanism 
+        for the user plane but promotes a more consistent security framework across NAS, RRC, and UP.
       </p>
 
       <h5>2.1.3 Network Domain Security (NDS/IPsec) in the Core</h5>
@@ -177,7 +179,7 @@
       <h4>2.2 Security Mechanisms in 5G</h4>
 
       <div style="text-align:center; margin: 20px 0;">
-        <img src="images/Overview of the security architecture(5G).png" alt="Overview of the security architecture (5G)" style="max-width: 60%; border-radius: 10px;">
+        <img src="images/security/Overview of the security architecture(5G).png" alt="Overview of the security architecture (5G)" style="max-width: 60%; border-radius: 10px;">
         <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
           Figure: Overview of the security architecture (5G)
         </p>
@@ -192,14 +194,14 @@
       </p>
 
       <div style="text-align:center; margin: 20px 0;">
-        <img src="images/Authentication procedure for 5G AKA.png" alt="Authentication procedure for 5G AKA" style="max-width: 60%; border-radius: 10px;">
+        <img src="images/security/Authentication procedure for 5G AKA.png" alt="Authentication procedure for 5G AKA" style="max-width: 60%; border-radius: 10px;">
         <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
           Figure: Authentication procedure for 5G AKA
         </p>
       </div>
 
       <div style="text-align:center; margin: 20px 0;">
-        <img src="images/Authentication procedure for EAP-AKA'.png" alt="Authentication procedure for EAP-AKA'" style="max-width: 60%; border-radius: 10px;">
+        <img src="images/security/Authentication procedure for EAP-AKA'.png" alt="Authentication procedure for EAP-AKA'" style="max-width: 60%; border-radius: 10px;">
         <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
           Figure: Authentication procedure for EAP-AKA'
         </p>
@@ -327,7 +329,7 @@
       </p>
 
       <div style="text-align:center; margin: 20px 0;">
-        <img src="images/Key hierarchy generation in 5GS.png" alt="Key hierarchy generation in 5GS" style="max-width: 60%; border-radius: 10px;">
+        <img src="images/security/Key hierarchy generation in 5GS.png" alt="Key hierarchy generation in 5GS" style="max-width: 60%; border-radius: 10px;">
         <p style="font-size: 0.8rem; color:#9ca3af; margin-top: 5px;">
           Figure: Key hierarchy generation in 5GS
         </p>
