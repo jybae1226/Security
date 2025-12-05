@@ -31,104 +31,27 @@
     <section class="hero">
       <h1>4. My Own Opinion</h1>
 
-      <h2>4.1 Is 5G “more secure” than 4G in practice?</h2>
+      <h6>4.1 Is 5G “more secure” than 4G in practice?</h6>
       <p>
-        From a protocol and architecture perspective, the security design of 5G is clearly
-        stronger than that of 4G. Mechanisms such as 5G-AKA / EAP-AKA′, SUPI/SUCI for identity
-        protection, and service-based architecture (SBA) security with SEPP show that lessons
-        from earlier generations have been incorporated into the standard. Mutual authentication,
-        improved key binding to serving networks, and encrypted subscriber identifiers
-        significantly raise the bar for many classical attacks.
+        From a protocol and architectural standpoint, I believe that the security design of 5G is clearly 
+        stronger than that of 4G. Mechanisms such as 5G-AKA / EAP-AKA′, SUPI/SUCI-based subscriber identity protection, 
+        and SBA security through SEPP reflect how lessons from previous generations have been incorporated 
+        into the standard. In my view, mutual authentication, improved key binding to serving networks, 
+        and encrypted subscriber identifiers all raise the bar significantly for many traditional attack scenarios.
       </p>
       <p>
-        However, if the question is whether 5G deployments today are always safer for end users,
-        the answer is more nuanced. Many 5G Non-Stand-Alone (NSA) deployments still inherit 4G
-        attach and mobility behavior, including pre-authentication signaling and fallback to
-        legacy technologies. As long as 2G/3G remain available and enabled, downgrade paths and
-        fake base-station attacks remain realistic in those regions. Optional protections such as
-        user-plane integrity are also not consistently activated in real networks due to
-        performance or operational considerations.
+        However, I do not think the question of whether 5G is always more secure for end users today 
+        can be answered simply. Many 5G NSA (Non-Stand-Alone) deployments still rely on 4G attach and 
+        mobility procedures, including pre-authentication signaling and fallback to legacy technologies. 
+        As long as 2G and 3G remain available and enabled on devices, I consider downgrade attacks and 
+        fake base-station threats to remain realistically achievable. Optional protections such as 
+        user-plane integrity are also not consistently enabled in operational networks due to performance or 
+        operational constraints, which further limits practical security.
       </p>
       <p>
-        In summary, architecturally 5G represents a meaningful security improvement, but the
-        effective security level in practice is heavily constrained by legacy coexistence,
-        configuration choices, and implementation quality rather than by the standard itself.
-      </p>
-
-      <h2>4.2 Where the real risks lie today</h2>
-      <p>
-        Looking at the mechanisms and attacks discussed earlier, the most relevant current risks
-        can be grouped into several areas:
-      </p>
-      <p>
-        <strong>Legacy coexistence and downgrade paths.</strong>
-        As long as 2G/3G networks are still deployed and allowed as fallback options, attackers
-        can often sidestep much of the security hardening in LTE and 5G by forcing devices onto
-        weaker technologies. In this sense, decisions about retiring older RATs are almost as
-        important as introducing new security features in 5G.
-      </p>
-      <p>
-        <strong>Signaling behavior and implementation details.</strong>
-        Design choices such as processing some NAS reject messages before integrity protection
-        create structural weaknesses that cannot be fully removed by configuration alone. How
-        devices implement timers, how often temporary identifiers are refreshed, and how strictly
-        networks validate signaling causes all have a major influence on real-world exploitability.
-      </p>
-      <p>
-        <strong>Core-network complexity and cloud-native 5G.</strong>
-        With SBA, NFV, and network slicing, 5G core networks now resemble large cloud systems
-        with many microservices and APIs. Even if telecom-specific protocols are sound,
-        misconfigurations, weak segmentation, certificate management issues, and exposed
-        management interfaces can introduce vulnerabilities that are closer to traditional IT
-        security problems than to classical radio attacks.
-      </p>
-      <p>
-        <strong>Massive IoT and signaling storms.</strong>
-        The growth of mMTC means that huge numbers of devices can generate RRC and NAS signaling.
-        Faulty firmware, compromised IoT devices, or poorly designed applications can unintentionally
-        create large-scale signaling storms, which from the network’s perspective are not very
-        different from deliberate DDoS attacks.
-      </p>
-      <p>
-        Overall, the main risks are not catastrophic cryptographic failures but rather
-        operational and ecosystem issues: legacy interworking, incomplete deployment of existing
-        protections, and the complexity of cloud-native 5G cores.
-      </p>
-
-      <h2>4.3 Recommended security priorities</h2>
-      <p>
-        If I had to prioritize concrete actions for different stakeholders, they would be:
-      </p>
-      <p>
-        <strong>Mobile network operators:</strong> plan and execute the sunset of 2G/3G where
-        possible, or at least restrict fallback; enable integrity protection where performance
-        allows; harden SBA with strict mutual TLS, strong NF authentication and authorization,
-        and careful API exposure; and review paging and identifier-refresh policies from a
-        privacy perspective.
-      </p>
-      <p>
-        <strong>Device and chipset vendors:</strong> implement conservative handling of
-        unprotected signaling (especially reject and downgrade messages), expose security-relevant
-        options such as disabling 2G or preferring 5G SA to advanced users and enterprise admins,
-        and ensure that protocol-level mitigations can actually be delivered through robust
-        update mechanisms.
-      </p>
-      <p>
-        <strong>Regulators and standardization bodies:</strong> encourage or mandate the
-        deprecation of insecure legacy technologies where feasible, define minimum requirements
-        for paging-related privacy and SBA hardening, and promote transparency about the security
-        posture of commercial networks, especially those used for critical infrastructure.
-      </p>
-      <p>
-        <strong>Security researchers:</strong> gradually shift focus from purely radio-protocol
-        exploits toward SBA, slicing, orchestration, and cloud infrastructure, and perform
-        longitudinal measurements of how quickly best practices such as SUCI use, 5G SA
-        deployment, and GUTI refresh policies are adopted.
-      </p>
-      <p>
-        Overall, my view is that 4G and 5G are not fundamentally broken at the cryptographic
-        level. The decisive factor is how well the mechanisms are deployed and operated in
-        real networks.
+        In summary, while I view 5G as providing meaningful architectural improvements, 
+        I think the actual security experienced by users depends far more on legacy coexistence, 
+        configuration choices, and implementation quality than on the standard itself.
       </p>
 
       <div class="margin">
@@ -153,20 +76,18 @@
           First, security has improved significantly from 4G to 5G, especially in terms of
           subscriber identity protection and binding of keys to serving networks. However,
           as long as legacy technologies and downgrade paths are present, many of the classic
-          weaknesses do not disappear. Second, the main issues are rarely failures of the
-          cryptographic algorithms themselves; they are more often related to partial deployment
-          of available protections, permissive fallback policies, and configuration errors in
-          complex, cloud-native cores.
+          weaknesses do not disappear.
+        </p>
+        <p>
+          Second, the main issues are rarely failures of the cryptographic algorithms themselves;
+          they are more often related to partial deployment of available protections, permissive 
+          fallback policies, and configuration errors in complex, cloud-native cores.
         </p>
         <p>
           Third, the move to SBA and virtualization brings mobile core security closer to
           mainstream IT and cloud security. Telecom security expertise must now be combined with
           robust practices for API security, certificate management, segmentation, and automated
-          deployment pipelines. Risk evaluation becomes highly deployment-specific: the same
-          theoretical attack may be trivial in one operator’s network and practically infeasible
-          in another, depending on RAT sunset policies, identifier-refresh strategies, and
-          implementation maturity.
-        </p>
+          deployment pipelines.
         <p>
           In conclusion, secure 5G is technically achievable with the mechanisms already defined
           in current standards. Achieving it in practice depends on retiring or strictly limiting
