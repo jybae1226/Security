@@ -62,14 +62,14 @@
         </p>
       </div>
 
-      <p><strong>Basic roles.</strong></p>
+      <h6>Basic roles</h6>
       <ul>
         <li><strong>UE:</strong> the user’s device and USIM, which stores a long-term secret key and subscriber identity.</li>
         <li><strong>Home Subscriber Server (HSS):</strong> core database that holds subscriber profiles and the long-term keys.</li>
         <li><strong>Serving network:</strong> the visited or serving PLMN currently providing EPS service to the UE.</li>
       </ul>
 
-      <p><strong>How it works.</strong></p>
+      <h6>How it works</h6>
       <ul>
         <li>The serving network requests one or more authentication vectors from the HSS for the target subscriber.</li>
         <li>
@@ -87,7 +87,7 @@
         </li>
       </ul>
 
-      <p><strong>Why it matters.</strong></p>
+      <h6>Why it matters</h6>
       <p>
         EPS-AKA ensures that only legitimate subscribers attach to the EPS and that the network is
         authentic in the eyes of the UE. It also ensures that session keys are freshly derived each
@@ -115,7 +115,7 @@
         protection (message authentication and anti-tampering).
       </p>
 
-      <p><strong>How it works.</strong></p>
+      <h6>How it works</h6>
       <ul>
         <li>After EPS-AKA, the UE and the core share K<sub>ASME</sub> as the EPS master key.</li>
         <li>
@@ -133,7 +133,7 @@
         </li>
       </ul>
 
-      <p><strong>Why it matters.</strong></p>
+      <h6>Why it matters</h6>
       <p>
         Radio interface security protects against attackers who try to listen in or inject messages
         over the air. Without it, the confidentiality and correctness of signalling and user-plane
@@ -152,7 +152,7 @@
         mechanisms.
       </p>
 
-      <p><strong>How it works.</strong></p>
+      <h6>How it works</h6>
       <ul>
         <li>
           Security gateways or firewalls at the edge of protected domains establish IPsec Security
@@ -168,7 +168,7 @@
         </li>
       </ul>
 
-      <p><strong>Why it matters.</strong></p>
+      <h6>Why it matters</h6>
       <p>
         NDS/IPsec prevents unauthorized parties on the operator’s backbone or at peering points from
         observing or tampering with core signalling. However, failures in policy configuration,
@@ -207,7 +207,7 @@
         </p>
       </div>
 
-      <p><strong>Key concepts.</strong></p>
+      <h6>Key concepts</h6>
       <ul>
         <li>
           <strong>EAP (Extensible Authentication Protocol):</strong> a generic method for running
@@ -219,7 +219,7 @@
         </li>
       </ul>
 
-      <p><strong>How it works.</strong></p>
+      <h6>How it works</h6>
       <ul>
         <li>The UE and the home network still share a long-term key stored in the USIM.</li>
         <li>
@@ -235,7 +235,7 @@
         </li>
       </ul>
 
-      <p><strong>Why it matters.</strong></p>
+      <h6>Why it matters</h6>
       <p>
         5G-AKA and EAP-AKA′ address several design limitations of EPS-AKA, particularly in roaming
         environments and in binding security contexts to serving networks. They also integrate more
@@ -253,7 +253,7 @@
         <li><strong>SUCI (Subscription Concealed Identifier):</strong> a privacy-preserving identifier obtained by encrypting the SUPI with the home network’s public key.</li>
       </ul>
 
-      <p><strong>How it works.</strong></p>
+      <h6>How it works</h6>
       <ul>
         <li>The home network publishes a public key that UEs use to conceal their SUPI.</li>
         <li>
@@ -267,7 +267,7 @@
         </li>
       </ul>
 
-      <p><strong>Why it matters.</strong></p>
+      <h6>Why it matters</h6>
       <p>
         By encrypting the permanent identifier, SUCI makes it significantly harder for passive observers
         to track subscribers using long-lived identifiers. Active attacks with fake base stations are not
@@ -283,7 +283,7 @@
         traffic, 5G introduces the Security Edge Protection Proxy (SEPP).
       </p>
 
-      <p><strong>Key concepts.</strong></p>
+      <h6>Key concepts</h6>
       <ul>
         <li><strong>TLS (Transport Layer Security):</strong> provides confidentiality and integrity for TCP connections on SBI.</li>
         <li>
@@ -293,7 +293,7 @@
         </li>
       </ul>
 
-      <p><strong>How it works.</strong></p>
+      <h6>How it works</h6>
       <ul>
         <li>
           Each Network Function (NF) obtains a certificate and uses it to authenticate itself when
@@ -309,7 +309,7 @@
         </li>
       </ul>
 
-      <p><strong>Why it matters.</strong></p>
+      <h6>Why it matters</h6>
       <p>
         SBA security and SEPP are essential for protecting 5G’s more open, API-driven core. They reduce
         the risk that compromised or rogue elements can misuse core APIs or intercept roaming traffic,
